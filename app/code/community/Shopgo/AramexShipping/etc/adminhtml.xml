@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<config>
+    <menu>
+        <aramexshipping_menu translate="title" module="aramexshipping">
+            <title>Aramex Shipping</title>
+            <sort_order>71</sort_order>
+            <children>
+                <supplier module="aramexshipping">
+                    <title>Manage Suppliers</title>
+                    <sort_order>10</sort_order>
+                    <action>adminhtml/aramex_supplier</action>
+                </supplier>
+            </children>
+            <depends>
+                <config>carriers/aramex/active</config>
+            </depends>
+        </aramexshipping_menu>
+        <sales translate="title" module="aramexshipping">
+            <children>
+                <aramexshipping_pickup module="aramexshipping">
+                    <title>Aramex Pickups</title>
+                    <sort_order>35</sort_order>
+                    <action>adminhtml/aramex_pickup</action>
+                    <depends>
+                        <config>carriers/aramex/active</config>
+                    </depends>
+                </aramexshipping_pickup>
+            </children>
+        </sales>
+    </menu>
+    <acl>
+        <resources>
+            <admin>
+                <children>
+                    <aramexshipping_menu translate="title" module="aramexshipping">
+                        <title>Aramex Shipping</title>
+                        <sort_order>71</sort_order>
+                        <children>
+                            <supplier translate="title" module="aramexshipping">
+                                <title>Manage Suppliers</title>
+                                <sort_order>10</sort_order>
+                            </supplier>
+                        </children>
+                    </aramexshipping_menu>
+                    <sales translate="title" module="aramexshipping">
+                        <children>
+                            <pickup module="aramexshipping">
+                                <title>Aramex Pickups</title>
+                                <sort_order>35</sort_order>
+                            </pickup>
+                        </children>
+                    </sales>
+                </children>
+            </admin>
+        </resources>
+    </acl>
+</config>

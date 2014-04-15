@@ -1,0 +1,397 @@
+<?php if ($this->isEnabled()): ?>
+<?php $formData = $this->getFormData() ?>
+<div class="entry-edit">
+    <div class="entry-edit-head">
+        <h4 class="icon-head head-shopgo-aramex-shipment-pickup left"><?php echo Mage::helper('sales')->__('Aramex Shipment Pickup Create Form') ?></h4>
+        <div class="right"><a id="shopgo_aramex_shipment_pickup_close" href="#" title="<?php echo $this->__('Close') ?>">X</a></div>
+        <div class="clear"></div>
+    </div>
+    <div id="shopgo_aramex_shipment_pickup_trigger_container" class="a-center last">
+        <fieldset>
+            <div class="wrapper">
+                <button id="shopgo_aramex_shipment_pickup_open" class="scalable" type="button" title="<?php echo $this->__('Create Pickup') ?>"><span><span><span><?php echo $this->__('Create Pickup') ?></span></span></span></button>
+                <input type="hidden" id="shopgo_aramex_shipment_pickup_enabled" name="shopgo[aramex][pickup][enabled]" value="<?php echo !empty($formData) ? 1 : 0 ?>" />
+            </div>
+        </fieldset>
+    </div>
+    <div id="shopgo_aramex_shipment_pickup_container" class="shopgo-aramex-container-table" style="display: none;">
+        <fieldset>
+            <div class="row">
+                <div class="box-left">
+                    <div><strong><?php echo $this->__('Address') ?></strong></div>
+                    <div class="fieldset address">
+                        <table id="shopgo_aramex_pickup_items_address_table" cellpadding="0" cellspacing="0">
+                            <tbody>
+                                <tr class="address-line-1">
+                                    <td class="label"><?php echo $this->__('Address Line 1') ?>&nbsp;<span class="required">*</span></td>
+                                    <td class="field"><input type="text" class="input-text sga-pickup-required-entry" name="shopgo[aramex][pickup][address][line1]" value="<?php echo $this->getFormFieldData('street_line1', $formData['address']['line1']) ?>" /></td>
+                                </tr>
+                                <tr class="address-line-2">
+                                    <td class="label"><?php echo $this->__('Address Line 2') ?></td>
+                                    <td class="field"><input type="text" class="input-text" name="shopgo[aramex][pickup][address][line2]" value="<?php echo $this->getFormFieldData('street_line2', $formData['address']['line2']) ?>" /></td>
+                                </tr>
+                                <tr class="address-line-3">
+                                    <td class="label"><?php echo $this->__('Address Line 3') ?></td>
+                                    <td class="field"><input type="text" class="input-text" name="shopgo[aramex][pickup][address][line3]" value="<?php echo $this->getFormFieldData('street_line3', $formData['address']['line3']) ?>" /></td>
+                                </tr>
+                                <tr class="country">
+                                    <td class="label"><?php echo $this->__('Country') ?>&nbsp;<span class="required">*</span></td>
+                                    <td class="field">
+                                        <select class="sga-pickup-required-entry" name="shopgo[aramex][pickup][address][country_code]">
+                                            <?php $addressCountry = $this->getFormFieldData('country_id', $formData['address']['country_code']) ?>
+                                            <?php foreach ($this->getCountryCodeOptions() as $option): ?>
+                                            <option value="<?php echo $option['value'] ?>"<?php if ($addressCountry == $option['value']): ?> selected<?php endif ?>><?php echo $option['label'] ?></option>
+                                            <?php endforeach ?>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr class="city">
+                                    <td class="label"><?php echo $this->__('City') ?>&nbsp;<span class="required">*</span></td>
+                                    <td class="field"><input type="text" class="input-text sga-pickup-required-entry" name="shopgo[aramex][pickup][address][city]" value="<?php echo $this->getFormFieldData('city', $formData['address']['city']) ?>" /></td>
+                                </tr>
+                                <tr class="state-province">
+                                    <td class="label"><?php echo $this->__('State/Province') ?></td>
+                                    <td class="field"><input type="text" class="input-text" name="shopgo[aramex][pickup][address][state_or_province_code]" value="<?php echo $this->getFormFieldData('region_id', $formData['address']['state_or_province_code']) ?>" /></td>
+                                </tr>
+                                <tr class="post-code">
+                                    <td class="label"><?php echo $this->__('Post Code') ?></td>
+                                    <td class="field"><input type="text" class="input-text" name="shopgo[aramex][pickup][address][post_code]" value="<?php echo $this->getFormFieldData('postcode', $formData['address']['postcode']) ?>" /></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="fieldset etc">
+                        <div class="box-left">
+                            <table id="shopgo_aramex_pickup_items_etc_table_left" cellpadding="0" cellspacing="0">
+                                <tbody>
+                                    <tr class="vehicle">
+                                        <td class="label"><?php echo $this->__('Vehicle Type') ?></td>
+                                        <td class="field"><input type="text" class="input-text" name="shopgo[aramex][pickup][vehicle]" value="<?php echo $formData['vehicle'] ?>" /></td>
+                                    </tr>
+                                    <tr class="status">
+                                        <td class="label"><?php echo $this->__('Status') ?>&nbsp;<span class="required">*</span></td>
+                                        <td class="field">
+                                            <select class="sga-pickup-required-entry" name="shopgo[aramex][pickup][status]">
+                                                <?php $pickupStatus = $formData['status'] ?>
+                                                <?php foreach ($this->getStatusOptions() as $option): ?>
+                                                <option value="<?php echo $option['value'] ?>"<?php if ($pickupStatus == $option['value']): ?> selected<?php endif ?>><?php echo $option['label'] ?></option>
+                                                <?php endforeach ?>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="box-right">
+                            <table id="shopgo_aramex_pickup_items_etc_table_right" cellpadding="0" cellspacing="0">
+                                <tbody>
+                                    <tr class="pickup-location">
+                                        <td class="label"><?php echo $this->__('Pickup Location') ?>&nbsp;<span class="required">*</span></td>
+                                        <td class="field"><input type="text" class="input-text sga-pickup-required-entry" name="shopgo[aramex][pickup][location]" value="<?php echo $formData['location'] ?>" /></td>
+                                    </tr>
+                                    <tr class="comment">
+                                        <td class="label"><?php echo $this->__('Comment') ?></td>
+                                        <td class="field"><input type="text" class="input-text" name="shopgo[aramex][pickup][comment]" value="<?php echo $formData['comment'] ?>" /></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+                <div class="box-right">
+                    <div><strong><?php echo $this->__('Contact') ?></strong></div>
+                    <div class="fieldset contact">
+                        <table id="shopgo_aramex_pickup_items_contact_table" cellpadding="0" cellspacing="0">
+                            <tbody>
+                                <tr class="department">
+                                    <td class="label"><?php echo $this->__('Department') ?></td>
+                                    <td class="field"><input type="text" class="input-text" name="shopgo[aramex][pickup][contact][department]" value="<?php echo $this->getFormFieldData('department', $formData['contact']['department']) ?>" /></td>
+                                </tr>
+                                <tr class="person-name">
+                                    <td class="label"><?php echo $this->__('Person Name') ?>&nbsp;<span class="required">*</span></td>
+                                    <td class="field"><input type="text" class="input-text sga-pickup-required-entry" name="shopgo[aramex][pickup][contact][person_name]" value="<?php echo $this->getFormFieldData('person_name', $formData['contact']['person_name']) ?>" /></td>
+                                </tr>
+                                <tr class="title">
+                                    <td class="label"><?php echo $this->__('Title') ?></td>
+                                    <td class="field"><input type="text" class="input-text" name="shopgo[aramex][pickup][contact][title]" value="<?php echo $this->getFormFieldData('person_title', $formData['contact']['title']) ?>" /></td>
+                                </tr>
+                                <tr class="company-name">
+                                    <td class="label"><?php echo $this->__('Company Name') ?>&nbsp;<span class="required">*</span></td>
+                                    <td class="field"><input type="text" class="input-text sga-pickup-required-entry" name="shopgo[aramex][pickup][contact][company_name]" value="<?php echo $this->getFormFieldData('company', $formData['contact']['company_name']) ?>" /></td>
+                                </tr>
+                                <tr class="phone-number-1">
+                                    <td class="label"><?php echo $this->__('Phone Number 1') ?>&nbsp;<span class="required">*</span></td>
+                                    <td class="field table">
+                                        <table cellpadding="0" cellspacing="0">
+                                            <tbody>
+                                                <tr>
+                                                    <td><input type="text" class="input-text sga-pickup-required-entry" name="shopgo[aramex][pickup][contact][phone_number1]" value="<?php echo $this->getFormFieldData('phone_number1', $formData['contact']['phone_number1']) ?>" /></td>
+                                                    <td class="ext-label"><?php echo $this->__('Ext') ?></td>
+                                                    <td class="ext-field"><input type="text" class="input-text" name="shopgo[aramex][pickup][contact][phone_number1_ext]" value="<?php echo $this->getFormFieldData('phone_number1_ext', $formData['contact']['phone_number1_ext']) ?>" /></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr class="phone-number-2">
+                                    <td class="label"><?php echo $this->__('Phone Number 2') ?></td>
+                                    <td class="field table">
+                                        <table cellpadding="0" cellspacing="0">
+                                            <tbody>
+                                                <tr>
+                                                    <td><input type="text" class="input-text" name="shopgo[aramex][pickup][contact][phone_number2]" value="<?php echo $this->getFormFieldData('phone_number2', $formData['contact']['phone_number2']) ?>" /></td>
+                                                    <td class="ext-label"><?php echo $this->__('Ext') ?></td>
+                                                    <td class="ext-field"><input type="text" class="input-text" name="shopgo[aramex][pickup][contact][phone_number2_ext]" value="<?php echo $this->getFormFieldData('phone_number2_ext', $formData['contact']['phone_number2_ext']) ?>" /></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr class="fax-number">
+                                    <td class="label"><?php echo $this->__('Fax Number') ?></td>
+                                    <td class="field"><input type="text" class="input-text" name="shopgo[aramex][pickup][contact][fax_number]" value="<?php echo $this->getFormFieldData('faxnumber', $formData['contact']['fax_number']) ?>" /></td>
+                                </tr>
+                                <tr class="cellphone">
+                                    <td class="label"><?php echo $this->__('Cell Phone') ?>&nbsp;<span class="required">*</span></td>
+                                    <td class="field"><input type="text" class="input-text sga-pickup-required-entry" name="shopgo[aramex][pickup][contact][cellphone]" value="<?php echo $this->getFormFieldData('cellphone', $formData['contact']['cellphone']) ?>" /></td>
+                                </tr>
+                                <tr class="email">
+                                    <td class="label"><?php echo $this->__('Email') ?>&nbsp;<span class="required">*</span></td>
+                                    <td class="field"><input type="text" class="input-text sga-pickup-required-entry validate-email" name="shopgo[aramex][pickup][contact][email]" value="<?php echo $this->getFormFieldData('email', $formData['contact']['email']) ?>" /></td>
+                                </tr>
+                                <tr class="type">
+                                    <td class="label"><?php echo $this->__('Type') ?></td>
+                                    <td class="field"><input type="text" class="input-text" name="shopgo[aramex][pickup][contact][type]" value="<?php echo $this->getFormFieldData('type', $formData['contact']['type']) ?>" /></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div class="row">
+                <div class="box-left">
+                    <div><strong><?php echo $this->__('References') ?></strong></div>
+                    <div class="fieldset references">
+                        <table id="shopgo_aramex_pickup_references_table" cellpadding="0" cellspacing="0">
+                            <tbody>
+                                <tr class="reference1">
+                                    <td class="label"><?php echo $this->__('Reference 1') ?>&nbsp;<span class="required">*</span></td>
+                                    <td class="field"><input type="text" class="input-text sga-pickup-required-entry" name="shopgo[aramex][pickup][reference1]" value="<?php echo $formData['reference1'] ?>" /></td>
+                                </tr>
+                                <tr class="reference2">
+                                    <td class="label"><?php echo $this->__('Reference 2') ?></td>
+                                    <td class="field"><input type="text" class="input-text" name="shopgo[aramex][pickup][reference2]" value="<?php echo $formData['reference2'] ?>" /></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="box-right">
+                    <div><strong><?php echo $this->__('Date and Time') ?></strong></div>
+                    <div class="fieldset date-time">
+                        <table id="shopgo_aramex_pickup_date_time_table" cellpadding="0" cellspacing="0">
+                            <tbody>
+                                <tr class="date">
+                                    <td class="label"><?php echo $this->__('Date') ?>&nbsp;<span class="required">*</span></td>
+                                    <td class="field">
+                                        <input type="text" id="shopgo_aramex_pickup_date" class="input-text sga-pickup-required-entry" name="shopgo[aramex][pickup][date]" value="<?php echo $formData['date'] ?>" />
+                                        <img id="shopgo_aramex_pickup_date_trig" class="v-middle" src="<?php echo $this->getSkinUrl('images/grid-cal.gif') ?>" alt="<?php echo $this->__('Select Date') ?>" title="<?php echo $this->__('Select Date') ?>" />
+                                    </td>
+                                </tr>
+                                <tr class="ready-time">
+                                    <td class="label"><?php echo $this->__('Ready Time') ?>&nbsp;<span class="required">*</span></td>
+                                    <td class="field table">
+                                        <table cellpadding="0" cellspacing="0">
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <select class="sga-pickup-required-entry" name="shopgo[aramex][pickup][ready_time][hour]">
+                                                            <?php $readyTimeHour = $formData['ready_time']['hour'] ?>
+                                                            <?php foreach ($this->getTimePartsOptions('hour') as $option): ?>
+                                                            <option value="<?php echo $option['value'] ?>"<?php if ($readyTimeHour == $option['value']): ?> selected<?php endif ?>><?php echo $option['label'] ?></option>
+                                                            <?php endforeach ?>
+                                                        </select>
+                                                    </td>
+                                                    <td class="time-separator">:</td>
+                                                    <td>
+                                                        <select class="sga-pickup-required-entry" name="shopgo[aramex][pickup][ready_time][minute]">
+                                                            <?php $readyTimeMinute = $formData['ready_time']['minute'] ?>
+                                                            <?php foreach ($this->getTimePartsOptions('minute') as $option): ?>
+                                                            <option value="<?php echo $option['value'] ?>"<?php if ($readyTimeMinute == $option['value']): ?> selected<?php endif ?>><?php echo $option['label'] ?></option>
+                                                            <?php endforeach ?>
+                                                        </select>
+                                                    </td>
+                                                    <td class="time-separator">:</td>
+                                                    <td>
+                                                        <select class="sga-pickup-required-entry" name="shopgo[aramex][pickup][ready_time][second]">
+                                                            <?php $readyTimeSecond = $formData['ready_time']['second'] ?>
+                                                            <?php foreach ($this->getTimePartsOptions('second') as $option): ?>
+                                                            <option value="<?php echo $option['value'] ?>"<?php if ($readyTimeSecond == $option['value']): ?> selected<?php endif ?>><?php echo $option['label'] ?></option>
+                                                            <?php endforeach ?>
+                                                        </select>
+                                                    </td>
+                                                    <td class="time-separator meridian">&nbsp;</td>
+                                                    <td>
+                                                        <select class="sga-pickup-required-entry" name="shopgo[aramex][pickup][ready_time][meridian]">
+                                                            <?php $readyTimeMeridian = $formData['ready_time']['meridian'] ?>
+                                                            <?php foreach ($this->getTimePartsOptions('meridian') as $option): ?>
+                                                            <option value="<?php echo $option['value'] ?>"<?php if ($readyTimeMeridian == $option['value']): ?> selected<?php endif ?>><?php echo $option['label'] ?></option>
+                                                            <?php endforeach ?>
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr class="last-time">
+                                    <td class="label"><?php echo $this->__('Last Time') ?>&nbsp;<span class="required">*</span></td>
+                                    <td class="field table">
+                                        <table cellpadding="0" cellspacing="0">
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <select class="sga-pickup-required-entry" name="shopgo[aramex][pickup][last_time][hour]">
+                                                            <?php $lastTimeHour = $formData['last_time']['hour'] ?>
+                                                            <?php foreach ($this->getTimePartsOptions('hour') as $option): ?>
+                                                            <option value="<?php echo $option['value'] ?>"<?php if ($lastTimeHour == $option['value']): ?> selected<?php endif ?>><?php echo $option['label'] ?></option>
+                                                            <?php endforeach ?>
+                                                        </select>
+                                                    </td>
+                                                    <td class="time-separator">:</td>
+                                                    <td>
+                                                        <select class="sga-pickup-required-entry" name="shopgo[aramex][pickup][last_time][minute]">
+                                                            <?php $lastTimeMinute = $formData['last_time']['hour'] ?>
+                                                            <?php foreach ($this->getTimePartsOptions('minute') as $option): ?>
+                                                            <option value="<?php echo $option['value'] ?>"<?php if ($lastTimeMinute == $option['value']): ?> selected<?php endif ?>><?php echo $option['label'] ?></option>
+                                                            <?php endforeach ?>
+                                                        </select>
+                                                    </td>
+                                                    <td class="time-separator">:</td>
+                                                    <td>
+                                                        <select class="sga-pickup-required-entry" name="shopgo[aramex][pickup][last_time][second]">
+                                                            <?php $lastTimeSecond = $formData['last_time']['hour'] ?>
+                                                            <?php foreach ($this->getTimePartsOptions('second') as $option): ?>
+                                                            <option value="<?php echo $option['value'] ?>"<?php if ($lastTimeSecond == $option['value']): ?> selected<?php endif ?>><?php echo $option['label'] ?></option>
+                                                            <?php endforeach ?>
+                                                        </select>
+                                                    </td>
+                                                    <td class="time-separator meridian">&nbsp;</td>
+                                                    <td>
+                                                        <select class="sga-pickup-required-entry" name="shopgo[aramex][pickup][last_time][meridian]">
+                                                            <?php $lastTimeMeridian = $formData['last_time']['hour'] ?>
+                                                            <?php foreach ($this->getTimePartsOptions('meridian') as $option): ?>
+                                                            <option value="<?php echo $option['value'] ?>"<?php if ($lastTimeMeridian == $option['value']): ?> selected<?php endif ?>><?php echo $option['label'] ?></option>
+                                                            <?php endforeach ?>
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr class="closing-time">
+                                    <td class="label"><?php echo $this->__('Closing Time') ?>&nbsp;<span class="required">*</span></td>
+                                    <td class="field table">
+                                        <table cellpadding="0" cellspacing="0">
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <select class="sga-pickup-required-entry" name="shopgo[aramex][pickup][closing_time][hour]">
+                                                            <?php $closingTimeHour = $formData['closing_time']['hour'] ?>
+                                                            <?php foreach ($this->getTimePartsOptions('hour') as $option): ?>
+                                                            <option value="<?php echo $option['value'] ?>"<?php if ($closingTimeHour == $option['value']): ?> selected<?php endif ?>><?php echo $option['label'] ?></option>
+                                                            <?php endforeach ?>
+                                                        </select>
+                                                    </td>
+                                                    <td class="time-separator">:</td>
+                                                    <td>
+                                                        <select class="sga-pickup-required-entry" name="shopgo[aramex][pickup][closing_time][minute]">
+                                                            <?php $closingTimeMinute = $formData['closing_time']['minute'] ?>
+                                                            <?php foreach ($this->getTimePartsOptions('minute') as $option): ?>
+                                                            <option value="<?php echo $option['value'] ?>"<?php if ($closingTimeMinute == $option['value']): ?> selected<?php endif ?>><?php echo $option['label'] ?></option>
+                                                            <?php endforeach ?>
+                                                        </select>
+                                                    </td>
+                                                    <td class="time-separator">:</td>
+                                                    <td>
+                                                        <select class="sga-pickup-required-entry" name="shopgo[aramex][pickup][closing_time][second]">
+                                                            <?php $closingTimeSecond = $formData['closing_time']['second'] ?>
+                                                            <?php foreach ($this->getTimePartsOptions('second') as $option): ?>
+                                                            <option value="<?php echo $option['value'] ?>"<?php if ($closingTimeSecond == $option['value']): ?> selected<?php endif ?>><?php echo $option['label'] ?></option>
+                                                            <?php endforeach ?>
+                                                        </select>
+                                                    </td>
+                                                    <td class="time-separator meridian"></td>
+                                                    <td>
+                                                        <select class="sga-pickup-required-entry" name="shopgo[aramex][pickup][closing_time][meridian]">
+                                                            <?php $closingTimMeridian = $formData['closing_time']['meridian'] ?>
+                                                            <?php foreach ($this->getTimePartsOptions('meridian') as $option): ?>
+                                                            <option value="<?php echo $option['value'] ?>"<?php if ($closingTimMeridian == $option['value']): ?> selected<?php endif ?>><?php echo $option['label'] ?></option>
+                                                            <?php endforeach ?>
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div class="row">
+                <div><strong><?php echo $this->__('Items Details') ?></strong></div>
+                <div class="fieldset items-details">
+                    <div class="box-left">
+                        <table id="shopgo_aramex_pickup_items_details_table_left" cellpadding="0" cellspacing="0">
+                            <tbody>
+                                <tr class="package-type">
+                                    <td class="label"><?php echo $this->__('Package Type') ?></td>
+                                    <td class="field"><input type="text" class="input-text" name="shopgo[aramex][pickup][items][package_type]" value="<?php echo $formData['items']['package_type'] ?>" /></td>
+                                </tr>
+                                <tr class="volume">
+                                    <td class="label"><?php echo $this->__('Volume') ?>&nbsp;<span class="required">*</span></td>
+                                    <td class="field table">
+                                        <table cellpadding="0" cellspacing="0">
+                                            <tbody>
+                                                <tr>
+                                                    <td><input type="text" class="input-text sga-pickup-required-entry validate-greater-than-zero" name="shopgo[aramex][pickup][items][shipment_volume_value]" value="<?php echo $formData['items']['shipment_volume_value'] ?>" /></td>
+                                                    <td class="unit-label"><?php echo $this->__('Unit') ?></td>
+                                                    <td class="unit-field">
+                                                        <select name="shopgo[aramex][pickup][items][shipment_volume_unit]">
+                                                            <?php $shipmentVolumeUnit = $formData['items']['shipment_volume_unit'] ?>
+                                                            <?php foreach ($this->getUnitOfVolumeOptions() as $option): ?>
+                                                            <option value="<?php echo $option['value'] ?>"<?php if ($shipmentVolumeUnit == $option['value']): ?> selected<?php endif ?>><?php echo $option['label'] ?></option>
+                                                            <?php endforeach ?>
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="box-right">
+                        <table id="shopgo_aramex_pickup_items_details_table_right" cellpadding="0" cellspacing="0">
+                            <tbody>
+                                <tr class="comment">
+                                    <td class="label"><?php echo $this->__('Comment') ?></td>
+                                    <td class="field"><input type="text" class="input-text" name="shopgo[aramex][pickup][items][comment]" value="<?php echo $formData['items']['comment'] ?>" /></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+</div>
+<?php endif ?>

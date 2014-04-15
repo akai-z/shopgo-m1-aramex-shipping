@@ -1,0 +1,45 @@
+<?php echo $this->getButtonHtml() ?>
+<script type="text/javascript">//<![CDATA[
+var shopgoAramexShipping = {
+    passChanged: 0,
+    pinChanged: 0,
+    elmClassPrefix: '',
+    checkActionSender: 'system',
+    supplierId: '<?php echo $this->getData('id') ?>',
+    checkAramexAccount: function() {
+        var _params = {
+            username: $(this.elmClassPrefix + 'username').value,
+            password: $(this.elmClassPrefix + 'password').value,
+            account_country_code: $(this.elmClassPrefix + 'account_country_code').value,
+            account_entity: $(this.elmClassPrefix + 'account_entity').value,
+            account_number: $(this.elmClassPrefix + 'account_number').value,
+            account_pin: $(this.elmClassPrefix + 'account_pin').value,
+            sender: this.checkActionSender,
+            pass_changed: this.passChanged,
+            pin_changed: this.pinChanged
+        };
+        if (this.checkActionSender == 'supplier') {
+            _params.id = this.supplierId;
+        }
+        new Ajax.Request('<?php echo $this->getAjaxCheckUrl() ?>', {
+            parameters: _params,
+            onSuccess: function(transport) {
+                if (transport.responseText) {
+                    alert(transport.responseText);
+                }
+            }
+        });
+    }
+};
+
+document.observe("dom:loaded", function() {
+    if ($(document.body).hasClassName('adminhtml-system-config-edit')) {
+        shopgoAramexShipping.elmClassPrefix = 'carriers_aramex_';
+    } else if ($(document.body).hasClassName('aramexshipping-adminhtml-aramex-edit')) {
+        shopgoAramexShipping.checkActionSender = 'supplier';
+    }
+    $(shopgoAramexShipping.elmClassPrefix + 'password').observe('change', function(event) {
+        shopgoAramexShipping.passChanged = 1;
+    });
+});
+//]]></script>

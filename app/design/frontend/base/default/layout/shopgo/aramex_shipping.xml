@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <shipping_tracking_popup translate="label">
+        <reference name="shipping.tracking.popup">
+            <action method="setTemplate"><template>shopgo/aramex_shipping/tracking/popup.phtml</template></action>
+        </reference>
+    </shipping_tracking_popup>
+    <checkout_cart_index>
+        <reference name="checkout.cart.shipping">
+            <action method="setTemplate"><template>shopgo/aramex_shipping/checkout/cart/shipping.phtml</template></action>
+        </reference>
+    </checkout_cart_index>
+</layout>

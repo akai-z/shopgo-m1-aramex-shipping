@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <adminhtml_aramex_supplier_index>
+        <reference name="content">
+            <block type="aramexshipping/adminhtml_supplier" name="aramex_shipping_supplier" />
+        </reference>
+    </adminhtml_aramex_supplier_index>
+
+    <adminhtml_aramex_pickup_index>
+        <reference name="content">
+            <block type="aramexshipping/adminhtml_pickup" name="aramex_shipping_pickup" />
+        </reference>
+    </adminhtml_aramex_pickup_index>
+
+    <adminhtml_sales_order_shipment_new>
+        <reference name="head">
+            <action method="addCss" ifconfig="carriers/aramex/shipping_service">
+                <name>shopgo/aramex_shipping/sales/order/shipment/create/aramex/css/main.css</name>
+                <required_depends>carriers/aramex/active</required_depends>
+                <depends_check>1</depends_check>
+            </action>
+            <action method="addCss" ifconfig="carriers/aramex/shipping_service">
+                <name>shopgo/aramex_shipping/sales/order/shipment/create/aramex/css/shipment.css</name>
+                <required_depends>carriers/aramex/active</required_depends>
+                <depends_check>1</depends_check>
+            </action>
+            <action method="addCss" ifconfig="carriers/aramex/pickup_service">
+                <name>shopgo/aramex_shipping/sales/order/shipment/create/aramex/css/pickup.css</name>
+                <required_depends>carriers/aramex/active</required_depends>
+                <depends_check>1</depends_check>
+            </action>
+            <action method="addItem" ifconfig="carriers/aramex/shipping_service">
+                <type>skin_js</type>
+                <name>shopgo/aramex_shipping/sales/order/shipment/create/aramex/js/shipment.js</name>
+                <required_depends>carriers/aramex/active</required_depends>
+                <depends_check>1</depends_check>
+            </action>
+            <action method="addItem" ifconfig="carriers/aramex/pickup_service">
+                <type>skin_js</type>
+                <name>shopgo/aramex_shipping/sales/order/shipment/create/aramex/js/pickup.js</name>
+                <required_depends>carriers/aramex/active</required_depends>
+                <depends_check>1</depends_check>
+            </action>
+        </reference>
+        <reference name="form">
+            <action method="setTemplate">
+                <file>shopgo/aramex_shipping/sales/order/shipment/create/form.phtml</file>
+            </action>
+            <block
+                type="aramexshipping/adminhtml_sales_order_shipment_create_aramex_shipment"
+                name="aramex_shipment"
+                template="shopgo/aramex_shipping/sales/order/shipment/create/aramex/shipment.phtml"
+            />
+            <block
+                type="aramexshipping/adminhtml_sales_order_shipment_create_aramex_pickup"
+                name="aramex_shipment_pickup"
+                template="shopgo/aramex_shipping/sales/order/shipment/create/aramex/pickup.phtml"
+            />
+        </reference>
+    </adminhtml_sales_order_shipment_new>
+</layout>

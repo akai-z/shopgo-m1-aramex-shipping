@@ -1,0 +1,184 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Shopgo_AramexShipping>
+            <version>1.0.2</version>
+        </Shopgo_AramexShipping>
+    </modules>
+    <global>
+        <blocks>
+            <aramexshipping>
+                <class>Shopgo_AramexShipping_Block</class>
+            </aramexshipping>
+        </blocks>
+        <helpers>
+            <aramexshipping>
+                <class>Shopgo_AramexShipping_Helper</class>
+            </aramexshipping>
+        </helpers>
+        <models>
+<!--
+            <aramexshipping>
+                <class>Shopgo_AramexShipping_Model</class>
+                <resourceModel>aramexshipping_resource_eav_mysql4</resourceModel>
+            </aramexshipping>
+            <aramexshipping_resource_eav_mysql4>
+                <class>Shopgo_AramexShipping_Model_Resource_Eav_Mysql4</class>
+                <entities>
+                    <shipment>
+                        <table>aramex_shipping_shipments</table>
+                    </shipment>
+                    <pickup>
+                        <table>aramex_shipping_pickups</table>
+                    </pickup>
+                </entities>
+            </aramexshipping_resource_eav_mysql4>
+-->
+            <aramexshipping>
+                <class>Shopgo_AramexShipping_Model</class>
+                <resourceModel>aramexshipping_mysql4</resourceModel>
+            </aramexshipping>
+            <aramexshipping_mysql4>
+                <class>Shopgo_AramexShipping_Model_Mysql4</class>
+                <entities>
+                    <supplier>
+                        <table>aramex_shipping_suppliers</table>
+                    </supplier>
+                    <pickup>
+                        <table>aramex_shipping_pickups</table>
+                    </pickup>
+                </entities>
+            </aramexshipping_mysql4>
+            <shipping>
+                <rewrite>
+                    <info>Shopgo_AramexShipping_Model_Shipping_Info</info>
+                </rewrite>
+            </shipping>
+            <core>
+                <rewrite>
+                    <layout>Shopgo_AramexShipping_Model_Core_Layout</layout>
+                </rewrite>
+            </core>
+        </models>
+        <resources>
+            <aramexshipping_setup>
+                <setup>
+                    <module>Shopgo_AramexShipping</module>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </aramexshipping_setup>
+            <aramexshipping_write>
+                <connection>
+                  <use>core_write</use>
+                </connection>
+            </aramexshipping_write>
+            <aramexshipping_read>
+               <connection>
+                <use>core_read</use>
+              </connection>
+            </aramexshipping_read>
+<!--
+            <aramexshipping_flat_setup>
+                <setup>
+                    <module>Shopgo_AramexShipping</module>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </aramexshipping_flat_setup>
+            <aramexshipping_flat_write>
+                <connection>
+                  <use>core_write</use>
+                </connection>
+            </aramexshipping_flat_write>
+            <aramexshipping_flat_read>
+               <connection>
+                <use>core_read</use>
+              </connection>
+            </aramexshipping_flat_read>
+-->
+        </resources>
+<!--
+        <events>
+            <sales_order_shipment_save_after>
+                <observers>
+                    <aramex_shipping_order_observer>
+                        <type>singleton</type>
+                        <class>aramexshipping/observer</class>
+                        <method>salesOrderShipmentSaveAfter</method>
+                    </aramex_shipping_order_observer>
+                </observers>
+            </sales_order_shipment_save_after>
+        </events>
+-->
+        <template>
+            <email>
+                <aramex_shipping_supplier_notification_email_template translate="label" module="aramexshipping">
+                    <label>Aramex Shipping Supplier Notification Email Template</label>
+                    <file>aramex/supplier_notification.html</file>
+                    <type>html</type>
+                </aramex_shipping_supplier_notification_email_template>
+                <aramex_shipping_log_email_template translate="label" module="aramexshipping">
+                    <label>Aramex Shipping Log Email Template</label>
+                    <file>aramex/email_log.html</file>
+                    <type>html</type>
+                </aramex_shipping_log_email_template>
+            </email>
+        </template>
+    </global>
+    <frontend>
+        <layout>
+            <updates>
+                <aramexshipping>
+                    <file>shopgo/aramex_shipping.xml</file>
+                </aramexshipping>
+            </updates>
+        </layout>
+    </frontend>
+    <admin>
+        <routers>
+<!--
+            <aramexshipping>
+                <use>admin</use>
+                <args>
+                    <module>Shopgo_AramexShipping</module>
+                    <frontName>aramexshipping</frontName>
+                </args>
+            </aramexshipping>
+-->
+            <adminhtml>
+                <args>
+                    <modules>
+                        <aramexshipping before="Mage_Adminhtml">Shopgo_AramexShipping_Adminhtml</aramexshipping>
+<!--
+                        <aramexshipping before="Mage_Adminhtml_sales_order">Shopgo_AramexShipping_Adminhtml</aramexshipping>
+-->
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
+    <adminhtml>
+        <layout>
+            <updates>
+                <aramexshipping>
+                    <file>shopgo/aramex_shipping.xml</file>
+                </aramexshipping>
+            </updates>
+        </layout>
+    </adminhtml>
+    <default>
+        <carriers>
+            <aramex>
+                <active>0</active>
+                <model>aramexshipping/carrier_aramex</model>
+                <title>Aramex</title>
+                <product_type>PPX</product_type>
+                <unit_of_measure>KG</unit_of_measure>
+                <specificerrmsg>This shipping method is currently unavailable. If you would like to ship using this shipping method, please contact us.</specificerrmsg>
+            </aramex>
+        </carriers>
+    </default>
+</config>
