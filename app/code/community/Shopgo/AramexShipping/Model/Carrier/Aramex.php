@@ -19,8 +19,10 @@ class Shopgo_AramexShipping_Model_Carrier_Aramex
             'postcode'   => $request->getDestPostcode()
         );
 
-        $quoteId = Mage::getSingleton('checkout/session')->getQuoteId();
-        $quote = Mage::getModel("sales/quote")->load($quoteId);
+        $session = Mage::app()->getStore()->isAdmin()
+            ? Mage::getSingleton('adminhtml/session_quote')
+            : Mage::getSingleton('checkout/session');
+        $quote = $session->getQuote();
 
         $price = 0;
         $error = false;
