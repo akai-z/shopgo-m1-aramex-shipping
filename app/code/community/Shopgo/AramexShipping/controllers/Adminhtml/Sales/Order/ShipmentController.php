@@ -50,7 +50,7 @@ class Shopgo_AramexShipping_Adminhtml_Sales_Order_ShipmentController
                 $responseAjax->setOk(true);
             }
 
-            if ($_order->getShippingCarrier()->getCarrierCode() == 'aramex') {
+            if ($shipment->getOrder()->getShippingCarrier()->getCarrierCode() == 'aramex') {
                 $shopgoData = $this->getRequest()->getPost('shopgo');
                 $aramexShipment = true;
 
