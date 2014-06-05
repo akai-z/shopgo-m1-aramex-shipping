@@ -50,35 +50,35 @@ class Shopgo_AramexShipping_Adminhtml_Sales_Order_ShipmentController
                 $responseAjax->setOk(true);
             }
 
-            $shopgoData = $this->getRequest()->getPost('shopgo');
-            $aramexShipment = true;
+            if ($_order->getShippingCarrier()->getCarrierCode() == 'aramex') {
+                $shopgoData = $this->getRequest()->getPost('shopgo');
+                $aramexShipment = true;
 
-            if (isset($shopgoData['aramex'])) {
-                $aramexShipment = Mage::getModel('aramexshipping/shipment')
-                    ->prepareShipment(
-                        $shipment/*Mage::getModel('sales/order')->load($shipment->getOrder()->getId())*/,
-                        $shopgoData['aramex']
-                     );
-            }
-
-            if (!$aramexShipment) {
-                if (isset($shopgoData['aramex']['shipment'])) {
-                    Mage::getSingleton('adminhtml/session')
-                        ->setShipAramexShipmentData($shopgoData['aramex']['shipment']);
+                if (isset($shopgoData['aramex'])) {
+                    $aramexShipment = Mage::getModel('aramexshipping/shipment')
+                        ->prepareShipment(
+                            $shipment/*Mage::getModel('sales/order')->load($shipment->getOrder()->getId())*/,
+                            $shopgoData['aramex']
+                         );
                 }
 
-                if (isset($shopgoData['aramex']['pickup']['enabled'])
-                    && $shopgoData['aramex']['pickup']['enabled']) {
-                    Mage::getSingleton('adminhtml/session')
-                        ->setShipAramexPickupData($shopgoData['aramex']['pickup']);
+                if (!$aramexShipment) {
+                    if (isset($shopgoData['aramex']['shipment'])) {
+                        Mage::getSingleton('adminhtml/session')
+                            ->setShipAramexShipmentData($shopgoData['aramex']['shipment']);
+                    }
+
+                    if (isset($shopgoData['aramex']['pickup']['enabled'])
+                        && $shopgoData['aramex']['pickup']['enabled']) {
+                        Mage::getSingleton('adminhtml/session')
+                            ->setShipAramexPickupData($shopgoData['aramex']['pickup']);
+                    }
+
+                    $this->_getSession()->addError($this->__('Cannot save shipment.'));
+                    $this->_redirect('*/*/new', array('order_id' => $this->getRequest()->getParam('order_id')));
+                    return false;
                 }
-
-                $this->_getSession()->addError($this->__('Cannot save shipment.'));
-                $this->_redirect('*/*/new', array('order_id' => $this->getRequest()->getParam('order_id')));
-                return false;
-            }
-
-            if (!isset($shopgoData['aramex'])) {
+            } else {
                 $this->_saveShipment($shipment);
             }
 
