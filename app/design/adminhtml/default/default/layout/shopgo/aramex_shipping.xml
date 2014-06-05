@@ -29,18 +29,6 @@
                 <required_depends>carriers/aramex/active</required_depends>
                 <depends_check>1</depends_check>
             </action>
-            <action method="addItem" ifconfig="carriers/aramex/shipping_service">
-                <type>skin_js</type>
-                <name>shopgo/aramex_shipping/sales/order/shipment/create/aramex/js/shipment.js</name>
-                <required_depends>carriers/aramex/active</required_depends>
-                <depends_check>1</depends_check>
-            </action>
-            <action method="addItem" ifconfig="carriers/aramex/pickup_service">
-                <type>skin_js</type>
-                <name>shopgo/aramex_shipping/sales/order/shipment/create/aramex/js/pickup.js</name>
-                <required_depends>carriers/aramex/active</required_depends>
-                <depends_check>1</depends_check>
-            </action>
         </reference>
         <reference name="form">
             <action method="setTemplate">
