@@ -13,6 +13,16 @@ class Shopgo_AramexShipping_Model_Carrier_Aramex
             return false;
         }
 
+        $this->_updateFreeMethodQuote($request);
+
+        if ($request->getFreeShipping()
+            || ($this->getConfigData('free_shipping_subtotal')
+                && $request->getBaseSubtotalInclTax() >=
+                $this->getConfigData('free_shipping_subtotal'))
+        ) {
+            return false;
+        }
+
         $destinationData = array(
             'city'       => ucwords(strtolower($request->getDestCity())),
             'country_id' => $request->getDestCountryId(),
@@ -28,22 +38,18 @@ class Shopgo_AramexShipping_Model_Carrier_Aramex
         $error = false;
         $methodTitle = '';
 
-        if (!$request->getFreeShipping()) {
-            $result = Mage::getModel('aramexshipping/shipment')
-                ->getRatesAndPackages($quote, true, $destinationData);
+        $result = Mage::getModel('aramexshipping/shipment')
+            ->getRatesAndPackages($quote, true, $destinationData);
 
-            $error = $result['error'];
-            $error_msg = isset($result['error_msg'])
-                ? 'Aramex Error: ' . $result['error_msg'] : '';
-            $price = $result['price'];
-        } else {
-            $methodTitle = Mage::helper('aramexshipping')->__('Free shipping applied');
-        }
+        $error = $result['error'];
+        $error_msg = isset($result['error_msg'])
+            ? 'Aramex Error: ' . $result['error_msg'] : '';
+        $price = $result['price'];
 
         $handling = Mage::getStoreConfig('carriers/' . $this->_code . '/handling');
         $result = Mage::getModel('shipping/rate_result');
 
-        if ((!$error && $price > 0) || (!$error && $request->getFreeShipping())) {
+        if (!$error && $price > 0) {
             $method = Mage::getModel('shipping/rate_result_method');
             $method->setCarrier($this->_code);
             $method->setMethod($this->_code);
@@ -229,5 +235,24 @@ class Shopgo_AramexShipping_Model_Carrier_Aramex
         }
 
         $this->_result = $result;
+    }
+
+    protected function _updateFreeMethodQuote($request)
+    {
+        $freeShipping = false;
+        $items = $request->getAllItems();
+        $c = count($items);
+        for ($i = 0; $i < $c; $i++) {
+            if ($items[$i]->getProduct() instanceof Mage_Catalog_Model_Product) {
+                if ($items[$i]->getFreeShipping()) {
+                    $freeShipping = true;
+                } else {
+                    return;
+                }
+            }
+        }
+        if ($freeShipping) {
+            $request->setFreeShipping(true);
+        }
     }
 }
