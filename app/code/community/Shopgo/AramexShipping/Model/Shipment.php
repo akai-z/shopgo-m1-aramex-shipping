@@ -1016,9 +1016,6 @@ class Shopgo_AramexShipping_Model_Shipment
                 Mage::register('aramex_shipment', $shipment);
             }
 
-            $comments['shipmentLabel'] =
-                '<strong>' . $helper->__('Shipment Label') . ':</strong>&nbsp;<a href="'
-                . $shipmentInfo['shipmentLabel'] . '">' . $shipmentInfo['shipmentLabel'] . '</a>';
             $comments = '<br/><br/>' . implode('<br/>', $comments);
 
             if ($shipmentEmailComments = Mage::registry('aramex_shipments_comments')) {
