@@ -77,30 +77,8 @@ class Shopgo_AramexShipping_Adminhtml_Aramex_SupplierController
                 return;
             }
 
-            $accountsNbs = Mage::getModel('aramexshipping/supplier')->getCollection()
-                               ->addFieldToFilter('asv_id', array('neq' => $this->getRequest()->getParam('id')))
-                               ->addFieldToFilter('account_number', $data['account_number']);
-
-            if (count($accountsNbs) > 0) {
-                Mage::getSingleton('adminhtml/session')->addError($this->__('There is already another supplier with the same "Account Number"'));
-                Mage::getSingleton('adminhtml/session')->setFormData($data);
-                $this->_redirect('*/*/edit', array('id' => $this->getRequest()->getParam('id')));
-                return;
-            }
-
             if (!Zend_Validate::is($data['email'], 'EmailAddress')) {
                 Mage::getSingleton('adminhtml/session')->addError($this->__('Invalid email format'));
-                Mage::getSingleton('adminhtml/session')->setFormData($data);
-                $this->_redirect('*/*/edit', array('id' => $this->getRequest()->getParam('id')));
-                return;
-            }
-
-            $supplierByEmail = Mage::getModel('aramexshipping/supplier')->getCollection()
-                                   ->addFieldToFilter('asv_id', array('neq' => $this->getRequest()->getParam('id')))
-                                   ->addFieldToFilter('email', $data['email']);
-
-            if (count($supplierByEmail) > 0) {
-                Mage::getSingleton('adminhtml/session')->addError($this->__('There is already another supplier with the same "Email"'));
                 Mage::getSingleton('adminhtml/session')->setFormData($data);
                 $this->_redirect('*/*/edit', array('id' => $this->getRequest()->getParam('id')));
                 return;
