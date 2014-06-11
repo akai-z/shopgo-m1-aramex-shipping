@@ -1020,6 +1020,8 @@ class Shopgo_AramexShipping_Model_Shipment
                 Mage::register('aramex_shipment', $shipment);
             }
 
+            unset($comments['shipmentLabel']);
+
             $comments = '<br/><br/>' . implode('<br/>', $comments);
 
             if ($shipmentEmailComments = Mage::registry('aramex_shipments_comments')) {
