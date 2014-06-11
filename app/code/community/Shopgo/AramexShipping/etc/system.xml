@@ -319,7 +319,6 @@
                         </debug>
                         <showmethod translate="label">
                             <label>Show Method if Not Applicable</label>
-                            <comment>If No, Aramex errors will not appear on the frontend.</comment>
                             <frontend_type>select</frontend_type>
                             <sort_order>300</sort_order>
                             <frontend_class>shipping-skip-hide</frontend_class>
@@ -328,10 +327,21 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </showmethod>
+                        <aramex_error translate="label">
+                            <label>Show Aramex errors</label>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>310</sort_order>
+                            <frontend_class>shipping-skip-hide</frontend_class>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <depends><showmethod>1</showmethod></depends>
+                        </aramex_error>
                         <sort_order translate="label">
                             <label>Sort Order</label>
                             <frontend_type>text</frontend_type>
-                            <sort_order>310</sort_order>
+                            <sort_order>320</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>

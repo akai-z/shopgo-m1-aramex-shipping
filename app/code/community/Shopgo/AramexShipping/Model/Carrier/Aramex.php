@@ -42,8 +42,14 @@ class Shopgo_AramexShipping_Model_Carrier_Aramex
             ->getRatesAndPackages($quote, true, $destinationData);
 
         $error = $result['error'];
-        $error_msg = isset($result['error_msg'])
-            ? 'Aramex Error: ' . $result['error_msg'] : '';
+
+        $errorMessage = $this->getConfigData('specificerrmsg');
+
+        if (isset($result['error_msg'])
+            && Mage::helper('aramexshipping')->getConfigData('aramex_error', 'carriers_aramex')) {
+            $errorMessage = $aramexErrorMessage = 'Aramex Error: ' . $result['error_msg'];
+        }
+
         $price = $result['price'];
 
         $handling = Mage::getStoreConfig('carriers/' . $this->_code . '/handling');
@@ -62,13 +68,13 @@ class Shopgo_AramexShipping_Model_Carrier_Aramex
             $error = Mage::getModel('shipping/rate_result_error');
             $error->setCarrier($this->_code);
             $error->setCarrierTitle($this->getConfigData('title'));
-            $error->setErrorMessage($error_msg ? $error_msg : $this->getConfigData('specificerrmsg'));
+            $error->setErrorMessage($errorMessage);
             $result->append($error);
 
-            if ($error_msg) {
-                Mage::helper('aramexshipping')->log($error_msg, '', 'aramex_collect_rates');
+            if ($aramexErrorMessage) {
+                Mage::helper('aramexshipping')->log($aramexErrorMessage, '', 'aramex_collect_rates');
                 Mage::helper('aramexshipping')->sendLogEmail(
-                    array('subject' => 'Collect Rates Error Log', 'content' => $error_msg)
+                    array('subject' => 'Collect Rates Error Log', 'content' => $aramexErrorMessage)
                 );
             }
         }
