@@ -14,6 +14,8 @@ class Shopgo_AramexShipping_Model_Shipment
     const ECONOMY_PARCEL_EXPRESS    = 'EPX';
     const EXPRESS                   = 'EXP';
     const DOMESTIC                  = 'DOM';
+    const OND                       = 'OND';
+    const ONP                       = 'ONP';
     const CREDIT_CARDS_DELIVERY     = 'CDS';
     const SS_CASH_ON_DELIVERY       = 'CODS';
     const PAYMENT_TYPE_PREPAID      = 'P';
@@ -125,8 +127,9 @@ class Shopgo_AramexShipping_Model_Shipment
 
         $productGroup = $requestData['countryId'] == $requestData['destCountryId'] ?
             self::DOMESTIC : self::EXPRESS;
-        $productType = $productGroup == self::DOMESTIC ?
-            self::CREDIT_CARDS_DELIVERY : $helper->getConfigData('product_type', 'carriers_aramex');
+        $productType = $productGroup == self::DOMESTIC
+            ? $helper->getConfigData('dom_product_type', 'carriers_aramex')
+            : $helper->getConfigData('product_type', 'carriers_aramex');
 
         $params = array(
             'ClientInfo' => $helper->getClientInfo($clientInfoSource),
