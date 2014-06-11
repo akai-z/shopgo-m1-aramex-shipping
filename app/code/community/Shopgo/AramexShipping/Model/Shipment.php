@@ -611,7 +611,7 @@ class Shopgo_AramexShipping_Model_Shipment
             )
         );
 
-        if ($productGroup == self::EXPRESS) {
+        if ($productGroup == self::EXPRESS || $helper->getConfigData('dom_customs_value', 'carriers_aramex')) {
             $params['Shipments']['Shipment']['Details']['CustomsValueAmount'] = array(
                 'Value' => $helper->currencyConvert(
                     $price, $baseCurrencyCode,
