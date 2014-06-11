@@ -508,8 +508,9 @@ class Shopgo_AramexShipping_Model_Shipment
 
         $productGroup = $supplierData['country_code'] == $destinationData['country_id'] ?
             self::DOMESTIC : self::EXPRESS;
-        $productType = $productGroup == self::DOMESTIC ?
-            self::CREDIT_CARDS_DELIVERY : $helper->getConfigData('product_type', 'carriers_aramex');
+        $productType = $productGroup == self::DOMESTIC
+            ? $helper->getConfigData('dom_product_type', 'carriers_aramex')
+            : $helper->getConfigData('product_type', 'carriers_aramex');
 
         $shipFormData = array();
 
