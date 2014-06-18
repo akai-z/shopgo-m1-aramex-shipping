@@ -92,6 +92,14 @@ class Shopgo_AramexShipping_Adminhtml_Aramex_SupplierController
                 unset($data['account_pin']);
             }
 
+            if (isset($data['product_type_inherit'])) {
+                $data['product_type'] = '';
+            }
+
+            if (isset($data['dom_product_type_inherit'])) {
+                $data['dom_product_type'] = '';
+            }
+
             $model = Mage::getModel('aramexshipping/supplier');
             $model->setData($data)
                 ->setId($this->getRequest()->getParam('id'));

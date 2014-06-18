@@ -48,6 +48,22 @@ class Shopgo_AramexShipping_Block_Adminhtml_Supplier_Edit_Tab_Aramexaccountform
             'name' => 'check_account'
         ))->setRenderer($this->getLayout()->createBlock('aramexshipping/adminhtml_system_config_form_checkAccountButton'));
 
+        $fieldset->addType('product_type_select','Shopgo_AramexShipping_Block_Adminhtml_Supplier_Form_Element_ProductType');
+
+        $fieldset->addField('product_type', 'product_type_select', array(
+            'label'    => Mage::helper('aramexshipping')->__('Product Type'),
+            'name'     => 'product_type',
+            'required' => false
+        ));
+
+        $fieldset->addType('dom_product_type_select','Shopgo_AramexShipping_Block_Adminhtml_Supplier_Form_Element_DomProductType');
+
+        $fieldset->addField('dom_product_type', 'dom_product_type_select', array(
+            'label'    => Mage::helper('aramexshipping')->__('Domestic Product Type'),
+            'name'     => 'dom_product_type',
+            'required' => false
+        ));
+
         $data = array();
 
         if (Mage::registry('aramex_suppliers_data')) {
