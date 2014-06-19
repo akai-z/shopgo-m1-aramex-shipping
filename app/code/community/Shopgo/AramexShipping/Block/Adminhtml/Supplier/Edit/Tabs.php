@@ -25,6 +25,12 @@ class Shopgo_AramexShipping_Block_Adminhtml_Supplier_Edit_Tabs
             'content' => $this->getLayout()->createBlock('aramexshipping/adminhtml_supplier_edit_tab_aramexaccountform')->toHtml()
         ));
 
+        $this->addTab('aramex_settings_section', array(
+            'label'   => Mage::helper('aramexshipping')->__('Aramex Settings'),
+            'title'   => Mage::helper('aramexshipping')->__('Aramex Settings'),
+            'content' => $this->getLayout()->createBlock('aramexshipping/adminhtml_supplier_edit_tab_aramexsettingsform')->toHtml()
+        ));
+
         return parent::_beforeToHtml();
     }
 }

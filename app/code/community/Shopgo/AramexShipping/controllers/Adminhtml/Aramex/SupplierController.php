@@ -100,6 +100,10 @@ class Shopgo_AramexShipping_Adminhtml_Aramex_SupplierController
                 $data['dom_product_type'] = '';
             }
 
+            if (isset($data['dom_customs_value_inherit'])) {
+                $data['dom_customs_value'] = '';
+            }
+
             $model = Mage::getModel('aramexshipping/supplier');
             $model->setData($data)
                 ->setId($this->getRequest()->getParam('id'));
