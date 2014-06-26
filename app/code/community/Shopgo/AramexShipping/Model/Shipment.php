@@ -1007,7 +1007,9 @@ class Shopgo_AramexShipping_Model_Shipment
                 $shipment->addComment($comment, false, false);
             }
 
-            Mage::register('skip_shipment_save_after', true);
+            if (!Mage::registry('skip_shipment_save_after')) {
+                Mage::register('skip_shipment_save_after', true);
+            }
 
             if ($objectType == 'order') {
                 $shipment->getOrder()->setIsInProcess(true);
