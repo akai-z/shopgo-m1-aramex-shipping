@@ -482,6 +482,10 @@ class Shopgo_AramexShipping_Model_Shipment
             }
         }
 
+        if (Mage::registry('ship_form_aramex_shipment_data')) {
+            Mage::unregister('ship_form_aramex_shipment_data');
+        }
+
         $this->_sendShipmentEmail();
 
         Mage::getSingleton('checkout/session')->unsShipmentsPackages();
@@ -530,7 +534,6 @@ class Shopgo_AramexShipping_Model_Shipment
 
         if (Mage::registry('ship_form_aramex_shipment_data')) {
             $shipFormData = Mage::registry('ship_form_aramex_shipment_data');
-            Mage::unregister('ship_form_aramex_shipment_data');
         }
 
         $shippingDateTime = date('c', time());
