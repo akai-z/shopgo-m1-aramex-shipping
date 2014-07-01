@@ -221,6 +221,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
+                            <depends><free_shipping_enable>1</free_shipping_enable></depends>
                         </free_shipping_subtotal>
                         <alert_suppliers translate="label">
                             <label>Alert Suppliers</label>
