@@ -176,6 +176,7 @@
                 <model>aramexshipping/carrier_aramex</model>
                 <title>Aramex</title>
                 <product_type>PPX</product_type>
+                <dom_product_type>OND</dom_product_type>
                 <unit_of_measure>KG</unit_of_measure>
                 <specificerrmsg>This shipping method is currently unavailable. If you would like to ship using this shipping method, please contact us.</specificerrmsg>
             </aramex>
