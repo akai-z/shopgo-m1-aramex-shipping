@@ -4,6 +4,9 @@
         <Shopgo_AramexShipping>
             <active>true</active>
             <codePool>community</codePool>
+            <depends>
+                <Shopgo_ShippingCore/>
+            </depends>
         </Shopgo_AramexShipping>
     </modules>
 </config>

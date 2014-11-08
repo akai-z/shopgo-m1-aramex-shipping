@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Shopgo_AramexShipping>
-            <version>1.0.7</version>
+            <version>1.0.10</version>
         </Shopgo_AramexShipping>
     </modules>
     <global>
@@ -49,16 +49,6 @@
                     </pickup>
                 </entities>
             </aramexshipping_mysql4>
-            <shipping>
-                <rewrite>
-                    <info>Shopgo_AramexShipping_Model_Shipping_Info</info>
-                </rewrite>
-            </shipping>
-            <core>
-                <rewrite>
-                    <layout>Shopgo_AramexShipping_Model_Core_Layout</layout>
-                </rewrite>
-            </core>
         </models>
         <resources>
             <aramexshipping_setup>

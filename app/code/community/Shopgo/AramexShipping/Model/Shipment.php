@@ -57,8 +57,8 @@ class Shopgo_AramexShipping_Model_Shipment
     {
         $helper = Mage::helper('aramexshipping');
 
-        if ($checkDepends) {
-            return $helper->getStoreConfigWithDependsFlag(
+        if ($checkDepends && $helper->isAdvIfconfigEnabled()) {
+            return Mage::helper('advifconfig')->getStoreConfigWithDependsFlag(
                 Shopgo_AramexShipping_Helper_Data::CARRIERS_ARAMEX_SYSTEM_PATH . 'shipping_service',
                 Shopgo_AramexShipping_Helper_Data::CARRIERS_ARAMEX_SYSTEM_PATH . 'active',
                 1

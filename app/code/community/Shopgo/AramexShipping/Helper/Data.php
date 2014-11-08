@@ -1,15 +1,18 @@
 <?php
 
 class Shopgo_AramexShipping_Helper_Data
-    extends Mage_Core_Helper_Abstract
+    extends Shopgo_ShippingCore_Helper_Abstract
 {
-    const LOG_FILE                             = 'aramex_shipping.log';
     const LOG_EMAIL_TEMPLATE                   = 'aramex_shipping_log_email_template';
     const SUPPLIER_NOTIFICATION_EMAIL_TEMPLATE = 'aramex_shipping_supplier_notification_email_template';
     const GENERAL_CONTACT_EMAIL                = 'trans_email/ident_general/email';
     const CARRIERS_ARAMEX_SYSTEM_PATH          = 'carriers/aramex/';
     const SHIPPING_ORIGIN_SYSTEM_PATH          = 'shipping/origin/';
     const AUTHOR_EMAIL                         = 'mageamex@gmail.com';
+
+
+    protected $_logFile = 'aramex_shipping.log';
+
 
     public function getSuppliersCollection($id = null)
     {
@@ -213,79 +216,6 @@ class Shopgo_AramexShipping_Helper_Data
         return is_numeric($var) && (int)$var == $var && (int)$var > 0;
     }
 
-    public function currencyConvert($price, $from, $to, $output = '', $round = null)
-    {
-        $from = strtoupper($from);
-        $to = strtoupper($to);
-
-        $baseCurrencyCode = Mage::app()->getStore()->getBaseCurrencyCode();
-        $currentCurrencyCode = Mage::app()->getStore()->getCurrentCurrencyCode();
-
-        if ('_BASE_' == $from) {
-            $from = $baseCurrencyCode;
-        } elseif ('_CURRENT_' == $from) {
-            $from = $currentCurrencyCode;
-        }
-
-        if ('_BASE_' == $to) {
-            $to = $baseCurrencyCode;
-        } elseif ('_CURRENT_' == $to) {
-            $to = $currentCurrencyCode;
-        }
-
-        $output = strtolower($output);
-
-        $error  = false;
-        $result = array('price' => $price, 'currency' => $from);
-
-        if ($from != $to) {
-            $allowedCurrencies = Mage::getModel('directory/currency')->getConfigAllowCurrencies();
-            $rates = Mage::getModel('directory/currency')->getCurrencyRates($baseCurrencyCode, array_values($allowedCurrencies));
-
-            if (empty($rates) || !isset($rates[$from]) || !isset($rates[$to])) {
-                $error = true;
-            } elseif (empty($rates[$from]) || empty($rates[$to])) {
-                $error = true;
-            }
-
-            if ($error) {
-                $this->log($this->__('Currency conversion error.'));
-                if (isset($result[$output])) {
-                    return $result[$output];
-                } else {
-                    return $result;
-                }
-            }
-
-            $result = array(
-                'price' => ($price * $rates[$to]) / $rates[$from],
-                'currency' => $to
-            );
-        }
-
-        if (is_int($round)) {
-            $result['price'] = round($result['price'], $round);
-        }
-
-        if (isset($result[$output])) {
-            return $result[$output];
-        }
-
-        return $result;
-    }
-
-    public function convertRateCurrency($price, $priceCurrencyCode)
-    {
-        $baseCurrencyCode = Mage::app()->getStore()->getBaseCurrencyCode();
-        $result = array('price' => $price, 'currency' => $priceCurrencyCode);
-
-        if ($priceCurrencyCode != $baseCurrencyCode) {
-            $result = $this->currencyConvert($price, $priceCurrencyCode, $baseCurrencyCode);
-        }
-
-        return $result;
-    }
-
     public function sendLogEmail($params = array())
     {
         if (!empty($params)) {
@@ -328,60 +258,11 @@ class Shopgo_AramexShipping_Helper_Data
         }
     }
 
-    public function sendEmail($to, $templateId, $params = array(), $sender = 'general')
-    {
-        $mailTemplate = Mage::getModel('core/email_template');
-        $translate = Mage::getSingleton('core/translate');
-        $result = true;
-
-        $mailTemplate->setTemplateSubject($params['subject'])->sendTransactional(
-            $templateId,
-            $sender,
-            $to,
-            null,
-            $params,
-            Mage::app()->getStore()->getId()
-        );
-
-        if (!$mailTemplate->getSentSuccess()) {
-            $this->log('Could not send log email.');
-            $result = false;
-        }
-
-        $translate->setTranslateInline(true);
-
-        return $result;
-    }
-
     public function debug($params, $file = '')
     {
         if ($this->getConfigData('debug', 'carriers_aramex')) {
             $this->log($params, '', $file);
         }
-    }
-
-    public function userMessage($message, $type, $sessionPath = 'core/session')
-    {
-        try {
-            $session = Mage::getSingleton($sessionPath);
-
-            switch ($type) {
-                case 'error':
-                    $session->addError($message);
-                    break;
-                case 'success':
-                    $session->addSuccess($message);
-                    break;
-                case 'notice':
-                    $session->addNotice($message);
-                    break;
-            }
-        } catch (Exception $e) {
-            $this->log($e, 'exception');
-            return false;
-        }
-
-        return true;
     }
 
     public function hideLogPrivacies($data, $mass = false)
@@ -500,118 +381,8 @@ class Shopgo_AramexShipping_Helper_Data
         return $time;
     }
 
-    public function getSystemConfigNodeDepends($sectionName, $groupName = null, $fieldName = null)
+    public function isAdvIfconfigEnabled()
     {
-        $config = Mage::getSingleton('adminhtml/config');
-        $sectionName = trim($sectionName, '/');
-        $path = '//sections/' . $sectionName;
-        $groupNode = $fieldNode = null;
-        $sectionNode = $config->getSections()->xpath($path);
-        if (!empty($groupName)) {
-            $groupPath = $path .= '/groups/' . trim($groupName, '/');
-            $groupNode = $config->getSections()->xpath($path);
-        }
-        if (!empty($fieldName)) {
-            if (!empty($groupName)) {
-                $path .= '/fields/' . trim($fieldName, '/');
-                $fieldNode = $config->getSections()->xpath($path);
-            }
-            else {
-                Mage::throwException(
-                    $this->__('The group node name must be specified with field node name.')
-                );
-            }
-        }
-        $path .= '/depends';
-        $dependsNode = $config->getSections()->xpath($path);
-        foreach ($dependsNode as $node) {
-            return $node;
-        }
-        return null;
-    }
-
-    public function checkSystemConfigNodeDepends($section, $group, $field, $result = false)
-    {
-        $depends = $this->getSystemConfigNodeDepends($section, $group, $field);
-
-        foreach ((array)$depends as $fieldName => $fieldValue) {
-            $path = $section . '/' . $group . '/' . $fieldName;
-            $dependValid = $fieldValue == Mage::getStoreConfigFlag($path);
-            $result = $result && $this->checkSystemConfigNodeDepends(
-                $section, $group, $fieldName, $dependValid
-            );
-        }
-
-        return $result;
-    }
-
-    public function getStoreConfigWithDependsFlag($configPath, $requiredDepends = array(), $type = 'tree')
-    {
-        $ifConfig = Mage::getStoreConfigFlag($configPath);
-
-        if ($ifConfig) {
-            if ($type == 1 || $type == 'tree') {
-                $configPath = explode('/', $configPath);
-                $ifConfig = $ifConfig
-                    && $this->checkSystemConfigNodeDepends(
-                    $configPath[0], // Section
-                    $configPath[1], // Group
-                    $configPath[2], // Field
-                    $ifConfig
-                );
-            }
-
-            if ($type == 1 || $type == 'required') {
-                if (gettype($requiredDepends) == 'string') {
-                    $requiredDepends = array_map('trim', explode(',', $requiredDepends));
-                }
-
-                foreach ($requiredDepends as $depend) {
-                    $ifConfig = $ifConfig && Mage::getStoreConfigFlag($depend);
-                }
-            }
-        }
-
-        return $ifConfig;
-    }
-
-    public function log($params, $type = 'system', $_file = '')
-    {
-        if (empty($params)) {
-            return false;
-        }
-
-        if ($type == 'system' || $type == '') {
-            if (gettype($params) == 'string') {
-                $params = array(array('message' => $params));
-            }
-
-            foreach ($params as $param) {
-                if (!isset($param['message'])) {
-                    continue;
-                }
-                $message = gettype($param['message']) == 'array' ?
-                    print_r($param['message'], true) : $param['message'];
-                $level = isset($param['level']) ? $param['level'] : null;
-                $file = !empty($_file) ? $_file : self::LOG_FILE;
-                if (isset($param['file']) && !empty($param['file'])) {
-                    $file = $param['file'];
-                }
-                if (strpos($file, '.log') === false) {
-                    $file .= '.log';
-                }
-                $forceLog = isset($param['forceLog']) ? $param['forceLog'] : false;
-
-                Mage::log($message, $level, $file, $forceLog);
-            }
-        } elseif ($type == 'exception') {
-            if (get_class($params) != 'Exception') {
-                return false;
-            }
-
-            Mage::logException($params);
-        }
-
-        return true;
+        return Mage::helper('core')->isModuleEnabled('Shopgo_AdvIfconfig');
     }
 }

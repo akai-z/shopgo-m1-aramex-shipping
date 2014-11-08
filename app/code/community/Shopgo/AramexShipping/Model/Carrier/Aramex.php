@@ -16,7 +16,7 @@ class Shopgo_AramexShipping_Model_Carrier_Aramex
         $this->_updateFreeMethodQuote($request);
 
         if ($request->getFreeShipping()
-            || ($this->getConfigData('free_shipping_subtotal')
+            || ($this->getConfigData('free_shipping_enable')
                 && $request->getBaseSubtotalInclTax() >=
                 $this->getConfigData('free_shipping_subtotal'))
         ) {
