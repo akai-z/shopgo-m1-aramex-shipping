@@ -475,6 +475,10 @@ class Shopgo_AramexShipping_Model_Shipment
 
         $destinationData = $order->getShippingAddress()->getData();
 
+        if (empty($destinationData['email'])) {
+            $destinationData['email'] = $order->getCustomerEmail();
+        }
+
         foreach ($packages as $package) {
             $result = $this->_createShipment($object, $package, $destinationData, $quoteType);
             if (!$result) {
