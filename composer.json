@@ -1,0 +1,16 @@
+{
+    "name": "shopgo/Shopgo_AramexShipping",
+    "type": "magento-module",
+    "license": "GPLv2",
+    "description": "Aramex shipping Magento extension",
+    "require": {
+        "magento-hackathon/magento-composer-installer": "*",
+        "shopgo/shopgo_shippingcore": "dev-master"
+    },
+    "authors":[
+        {
+            "name": "Ammar@Shopgo",
+            "email": "ammar@shopgo.me"
+        }
+    ]
+}
