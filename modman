@@ -1,0 +1,7 @@
+app/code/community/Shopgo/AramexShipping/                                    app/code/community/Shopgo/AramexShipping/
+app/design/adminhtml/default/default/layout/shopgo/aramex_shipping.xml       app/design/adminhtml/default/default/layout/shopgo/aramex_shipping.xml
+app/design/adminhtml/default/default/template/shopgo/aramex_shipping/        app/design/adminhtml/default/default/template/shopgo/aramex_shipping/
+app/design/frontend/base/default/layout/shopgo/aramex_shipping.xml           app/design/frontend/base/default/layout/shopgo/aramex_shipping.xml
+app/design/frontend/base/default/template/shopgo/aramex_shipping/            app/design/frontend/base/default/template/shopgo/aramex_shipping/
+app/etc/modules/Shopgo_AramexShipping.xml                                    app/etc/modules/Shopgo_AramexShipping.xml
+skin/adminhtml/default/default/shopgo/aramex_shipping/                       skin/adminhtml/default/default/shopgo/aramex_shipping/
