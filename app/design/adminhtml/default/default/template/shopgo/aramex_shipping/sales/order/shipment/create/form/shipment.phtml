@@ -1,0 +1,76 @@
+<?php if ($this->isEnabled()): ?>
+<?php $formData = $this->getFormData() ?>
+<div class="entry-edit">
+    <div class="entry-edit-head">
+        <h4 class="icon-head head-shopgo-aramex-shipment"><?php echo Mage::helper('sales')->__('Aramex Shipment Create Form') ?></h4>
+        <div class="clear"></div>
+    </div>
+    <div id="shopgo_aramex_shipment_container" class="shopgo-aramex-container-table">
+        <fieldset>
+            <div class="row">
+                <div class="box-left">
+                    <div><strong><?php echo $this->__('Shipping and Due Dates') ?></strong></div>
+                    <div class="fieldset shipping-and-due-dates">
+                        <table id="shopgo_aramex_shipment_shipping_date_table" cellpadding="0" cellspacing="0">
+                            <tbody>
+                                <tr class="shipping-date">
+                                    <td class="label"><?php echo $this->__('Shipping Date') ?>&nbsp;<span class="required">*</span></td>
+                                    <td class="field">
+                                        <input type="text" id="shopgo_aramex_shipment_shipping_date" class="input-text required-entry" name="shopgo[aramex][shipment][shipping_date]" value="<?php echo $formData['shipping_date'] ?>" />
+                                        <img id="shopgo_aramex_shipment_shipping_date_trig" class="v-middle" src="<?php echo $this->getSkinUrl('images/grid-cal.gif') ?>" alt="<?php echo $this->__('Select Date') ?>" title="<?php echo $this->__('Select Date') ?>" />
+                                    </td>
+                                </tr>
+                                <tr class="due-date">
+                                    <td class="label"><?php echo $this->__('Due Date') ?></td>
+                                    <td class="field">
+                                        <input type="text" id="shopgo_aramex_shipment_due_date" class="input-text" name="shopgo[aramex][shipment][due_date]" value="<?php echo $formData['due_date'] ?>" />
+                                        <img id="shopgo_aramex_shipment_due_date_trig" class="v-middle" src="<?php echo $this->getSkinUrl('images/grid-cal.gif') ?>" alt="<?php echo $this->__('Select Date') ?>" title="<?php echo $this->__('Select Date') ?>" />
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="box-right">
+                    <div><strong><?php echo $this->__('Goods') ?></strong></div>
+                    <div class="fieldset goods">
+                        <table id="shopgo_aramex_shipment_goods_description_table" cellpadding="0" cellspacing="0">
+                            <tbody>
+                                <tr class="description">
+                                    <td class="label"><?php echo $this->__('Description') ?>&nbsp;<span class="required">*</span></td>
+                                    <td class="field">
+                                        <input type="text" class="input-text required-entry" name="shopgo[aramex][shipment][goods_description]" value="<?php echo $this->getFormFieldData('store_description', $formData['goods_description']) ?>" />
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+</div>
+<script type="text/javascript">
+//<![CDATA[
+    document.observe("dom:loaded", function() {
+        Calendar.setup({
+            inputField : 'shopgo_aramex_shipment_shipping_date',
+            ifFormat : '%m/%d/%Y %I:%M:%S %P',
+            showsTime: true,
+            button : 'shopgo_aramex_shipment_shipping_date_trig',
+            align : 'Bl',
+            singleClick : true
+        });
+
+        Calendar.setup({
+            inputField : 'shopgo_aramex_shipment_due_date',
+            ifFormat : '%m/%d/%Y %I:%M:%S %P',
+            showsTime: true,
+            button : 'shopgo_aramex_shipment_due_date_trig',
+            align : 'Bl',
+            singleClick : true
+        });
+    });
+//]]>
+</script>
+<?php endif ?>

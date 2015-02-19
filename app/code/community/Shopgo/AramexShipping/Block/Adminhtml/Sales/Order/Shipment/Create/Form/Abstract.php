@@ -1,6 +1,6 @@
 <?php
 
-abstract class Shopgo_AramexShipping_Block_Adminhtml_Sales_Order_Shipment_Create_Aramex_Abstract
+abstract class Shopgo_AramexShipping_Block_Adminhtml_Sales_Order_Shipment_Create_Form_Abstract
     extends Mage_Adminhtml_Block_Template
 {
     abstract protected function isEnabled();

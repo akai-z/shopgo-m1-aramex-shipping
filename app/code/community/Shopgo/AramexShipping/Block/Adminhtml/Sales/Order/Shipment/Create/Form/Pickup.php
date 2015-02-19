@@ -1,7 +1,7 @@
 <?php
 
-class Shopgo_AramexShipping_Block_Adminhtml_Sales_Order_Shipment_Create_Aramex_Pickup
-    extends Shopgo_AramexShipping_Block_Adminhtml_Sales_Order_Shipment_Create_Aramex_Abstract
+class Shopgo_AramexShipping_Block_Adminhtml_Sales_Order_Shipment_Create_Form_Pickup
+    extends Shopgo_AramexShipping_Block_Adminhtml_Sales_Order_Shipment_Create_Form_Abstract
 {
     protected function _construct()
     {

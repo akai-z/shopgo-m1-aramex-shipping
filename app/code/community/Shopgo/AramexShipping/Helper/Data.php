@@ -381,6 +381,14 @@ class Shopgo_AramexShipping_Helper_Data
         return $time;
     }
 
+    public function _getAdminhtmlShipmentForms($block)
+    {
+        $html = $block->getChildHtml('aramex_shipment') . "\n"
+              . $block->getChildHtml('aramex_shipment_pickup');
+
+        return $html;
+    }
+
     public function isAdvIfconfigEnabled()
     {
         return Mage::helper('core')->isModuleEnabled('Shopgo_AdvIfconfig');

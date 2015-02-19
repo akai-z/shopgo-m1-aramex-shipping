@@ -15,34 +15,46 @@
     <adminhtml_sales_order_shipment_new>
         <reference name="head">
             <action method="addCss" ifconfig="carriers/aramex/shipping_service">
-                <name>shopgo/aramex_shipping/sales/order/shipment/create/aramex/css/main.css</name>
-                <required_depends>carriers/aramex/active</required_depends>
-                <depends_check>1</depends_check>
+                <name>shopgo/aramex_shipping/sales/order/shipment/create/form/css/main.css</name>
+                <adv_ifconfig>
+                    <required_depends>carriers/aramex/active</required_depends>
+                    <depends_check>1</depends_check>
+                    <custom_rules>
+                        <check_used_method>aramex</check_used_method>
+                    </custom_rules>
+                </adv_ifconfig>
             </action>
             <action method="addCss" ifconfig="carriers/aramex/shipping_service">
-                <name>shopgo/aramex_shipping/sales/order/shipment/create/aramex/css/shipment.css</name>
-                <required_depends>carriers/aramex/active</required_depends>
-                <depends_check>1</depends_check>
+                <name>shopgo/aramex_shipping/sales/order/shipment/create/form/css/shipment.css</name>
+                <adv_ifconfig>
+                    <required_depends>carriers/aramex/active</required_depends>
+                    <depends_check>1</depends_check>
+                    <custom_rules>
+                        <check_used_method>aramex</check_used_method>
+                    </custom_rules>
+                </adv_ifconfig>
             </action>
             <action method="addCss" ifconfig="carriers/aramex/pickup_service">
-                <name>shopgo/aramex_shipping/sales/order/shipment/create/aramex/css/pickup.css</name>
-                <required_depends>carriers/aramex/active</required_depends>
-                <depends_check>1</depends_check>
+                <name>shopgo/aramex_shipping/sales/order/shipment/create/form/css/pickup.css</name>
+                <adv_ifconfig>
+                    <required_depends>carriers/aramex/active</required_depends>
+                    <depends_check>1</depends_check>
+                    <custom_rules>
+                        <check_used_method>aramex</check_used_method>
+                    </custom_rules>
+                </adv_ifconfig>
             </action>
         </reference>
         <reference name="form">
-            <action method="setTemplate">
-                <file>shopgo/aramex_shipping/sales/order/shipment/create/form.phtml</file>
-            </action>
             <block
-                type="aramexshipping/adminhtml_sales_order_shipment_create_aramex_shipment"
+                type="aramexshipping/adminhtml_sales_order_shipment_create_form_shipment"
                 name="aramex_shipment"
-                template="shopgo/aramex_shipping/sales/order/shipment/create/aramex/shipment.phtml"
+                template="shopgo/aramex_shipping/sales/order/shipment/create/form/shipment.phtml"
             />
             <block
-                type="aramexshipping/adminhtml_sales_order_shipment_create_aramex_pickup"
+                type="aramexshipping/adminhtml_sales_order_shipment_create_form_pickup"
                 name="aramex_shipment_pickup"
-                template="shopgo/aramex_shipping/sales/order/shipment/create/aramex/pickup.phtml"
+                template="shopgo/aramex_shipping/sales/order/shipment/create/form/pickup.phtml"
             />
         </reference>
     </adminhtml_sales_order_shipment_new>
