@@ -8,7 +8,7 @@
     "description": "Aramex shipping Magento extension",
     "require": {
         "magento-hackathon/magento-composer-installer": "*",
-        "shopgo/shopgo_shippingcore": "dev-master"
+        "shopgo/shipping-core": "dev-master"
     },
     "authors":[
         {
