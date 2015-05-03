@@ -1,0 +1,100 @@
+#shopgo_aramex_shipment_pickup_close {
+    color: #fff;
+    text-decoration: none;
+}
+
+#shopgo_aramex_shipment_pickup_trigger_container .wrapper {
+    background-color: #E5ECF2;
+    border: 1px solid #CBD3D4;
+    padding: 8px;
+}
+
+#shopgo_aramex_shipment_pickup_container .fieldset.address table td.label {
+    width: 180px;
+}
+
+#shopgo_aramex_shipment_pickup_container .fieldset.address table td.field input[type="text"] {
+    width: 230px;
+}
+
+#shopgo_aramex_shipment_pickup_container .fieldset.address table td.field select {
+    width: 235px;
+}
+
+#shopgo_aramex_shipment_pickup_container .fieldset.etc table td.label {
+    width: 115px;
+}
+
+#shopgo_aramex_shipment_pickup_container .fieldset.etc table td.field input[type="text"] {
+    width: 120px;
+}
+
+#shopgo_aramex_shipment_pickup_container .fieldset.etc table td.field select {
+    width: 125px;
+}
+
+#shopgo_aramex_shipment_pickup_container .fieldset.contact table td.label {
+    width: 180px;
+}
+
+#shopgo_aramex_shipment_pickup_container .fieldset.contact table td.field input[type="text"] {
+    width: 230px;
+}
+
+#shopgo_aramex_shipment_pickup_container .fieldset.contact table td.ext-label {
+    padding: 0 7px;
+}
+
+#shopgo_aramex_shipment_pickup_container .fieldset.contact table td.ext-field input[type="text"] {
+    width: 50px;
+}
+
+#shopgo_aramex_shipment_pickup_container .fieldset.references table td.label {
+    width: 115px;
+}
+
+#shopgo_aramex_shipment_pickup_container .fieldset.references table td.field input[type="text"] {
+    width: 120px;
+}
+
+#shopgo_aramex_shipment_pickup_container .fieldset.date-time table td.label {
+    width: 115px;
+}
+
+#shopgo_aramex_shipment_pickup_container .fieldset.date-time table td.field input[type="text"] {
+    width: 150px;
+}
+
+#shopgo_aramex_shipment_pickup_container .fieldset.date-time table td.field select {
+    width: 65px;
+}
+
+#shopgo_aramex_shipment_pickup_container .fieldset.date-time table td.field td.time-separator {
+    font-weight: bold;
+    text-align: center;
+    width: 10px;
+}
+
+#shopgo_aramex_shipment_pickup_container .fieldset.date-time table td.field td.time-separator.meridian {
+    width: 15px;
+}
+
+#shopgo_aramex_shipment_pickup_container .fieldset.items-details table td.label {
+    width: 115px;
+}
+
+#shopgo_aramex_shipment_pickup_container .fieldset.items-details table td.field input[type="text"] {
+    width: 150px;
+}
+
+#shopgo_aramex_shipment_pickup_container .fieldset.items-details table td.field select {
+    width: 65px;
+}
+
+#shopgo_aramex_shipment_pickup_container .fieldset.items-details table td.unit-label {
+    padding: 0 7px;
+}
+
+#shopgo_aramex_shipment_pickup_container .fieldset.items-details table td.unit-field input[type="text"] {
+    width: 50px;
+}

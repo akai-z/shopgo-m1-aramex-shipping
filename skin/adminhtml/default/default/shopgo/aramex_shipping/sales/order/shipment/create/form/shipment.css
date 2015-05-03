@@ -1,0 +1,15 @@
+#shopgo_aramex_shipment_container .fieldset.shipping-and-due-dates table td.label {
+    width: 115px;
+}
+
+#shopgo_aramex_shipment_container .fieldset.shipping-and-due-dates table td.field input[type="text"] {
+    width: 150px;
+}
+
+#shopgo_aramex_shipment_container .fieldset.goods table td.label {
+    width: 115px;
+}
+
+#shopgo_aramex_shipment_container .fieldset.goods table td.field input[type="text"] {
+    width: 150px;
+}
