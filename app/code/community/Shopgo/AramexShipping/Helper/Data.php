@@ -6,8 +6,12 @@ class Shopgo_AramexShipping_Helper_Data
     const LOG_EMAIL_TEMPLATE                   = 'aramex_shipping_log_email_template';
     const SUPPLIER_NOTIFICATION_EMAIL_TEMPLATE = 'aramex_shipping_supplier_notification_email_template';
     const GENERAL_CONTACT_EMAIL                = 'trans_email/ident_general/email';
+
     const CARRIERS_ARAMEX_SYSTEM_PATH          = 'carriers/aramex/';
     const SHIPPING_ORIGIN_SYSTEM_PATH          = 'shipping/origin/';
+    const ADDITIONAL_INFO_SYSTEM_PATH          = 'shipping/additional_info/';
+    const ARAMEX_SETTINGS_SYSTEM_PATH          = 'shipping/aramex_settings/';
+
     const AUTHOR_EMAIL                         = 'mageamex@gmail.com';
 
 
@@ -46,18 +50,18 @@ class Shopgo_AramexShipping_Helper_Data
             'address_line1'          => $this->getConfigData('street_line1', 'shipping_origin'),
             'address_line2'          => $this->getConfigData('street_line2', 'shipping_origin'),
             'address_line3'          => $this->getConfigData('street_line3', 'shipping_origin'),
-            'department'             => $this->getConfigData('department', 'shipping_origin'),
-            'person_name'            => $this->getConfigData('person_name', 'shipping_origin'),
-            'person_title'           => $this->getConfigData('person_title', 'shipping_origin'),
-            'company_name'           => $this->getConfigData('company', 'shipping_origin'),
-            'phone_number1'          => $this->getConfigData('phone_number1', 'shipping_origin'),
-            'phone_number1_ext'      => $this->getConfigData('phone_number1_ext', 'shipping_origin'),
-            'phone_number2'          => $this->getConfigData('phone_number2', 'shipping_origin'),
-            'phone_number2_ext'      => $this->getConfigData('phone_number2_ext', 'shipping_origin'),
-            'fax_number'             => $this->getConfigData('faxnumber', 'shipping_origin'),
-            'cellphone'              => $this->getConfigData('cellphone', 'shipping_origin'),
-            'email'                  => $this->getConfigData('email', 'shipping_origin'),
-            'type'                   => $this->getConfigData('type', 'shipping_origin')
+            'department'             => $this->getConfigData('department', 'aramex_settings'),
+            'person_name'            => $this->getConfigData('person_name', 'additional_info'),
+            'person_title'           => $this->getConfigData('person_title', 'additional_info'),
+            'company_name'           => $this->getConfigData('company', 'additional_info'),
+            'phone_number1'          => $this->getConfigData('phone_number', 'additional_info'),
+            'phone_number1_ext'      => $this->getConfigData('phone_number_ext', 'additional_info'),
+            'phone_number2'          => $this->getConfigData('phone_number2', 'additional_info'),
+            'phone_number2_ext'      => $this->getConfigData('phone_number2_ext', 'additional_info'),
+            'fax_number'             => $this->getConfigData('faxnumber', 'additional_info'),
+            'cellphone'              => $this->getConfigData('cellphone', 'additional_info'),
+            'email'                  => $this->getConfigData('email', 'additional_info'),
+            'type'                   => $this->getConfigData('type', 'aramex_settings')
         );
 
         $aramexAccount = array(
@@ -117,6 +121,12 @@ class Shopgo_AramexShipping_Helper_Data
                 break;
             case 'shipping_origin':
                 $path = self::SHIPPING_ORIGIN_SYSTEM_PATH;
+                break;
+            case 'additional_info':
+                $path = self::ADDITIONAL_INFO_SYSTEM_PATH;
+                break;
+            case 'aramex_settings':
+                $path = self::ARAMEX_SETTINGS_SYSTEM_PATH;
                 break;
         }
 

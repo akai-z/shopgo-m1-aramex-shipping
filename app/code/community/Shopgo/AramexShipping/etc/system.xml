@@ -40,7 +40,7 @@
                             <label>Password</label>
                             <comment><![CDATA[
                                 You can create your own Aramex account here:<br/>
-                                <a href="https://www.aramex.com/accounts/registration-signup.aspx" target="_blank">https://www.aramex.com/accounts/registration-signup.aspx</a>
+                                https://www.aramex.com/accounts/registration-signup.aspx
                             ]]></comment>
                             <frontend_type>obscure</frontend_type>
                             <backend_model>adminhtml/system_config_backend_encrypted</backend_model>
@@ -353,122 +353,32 @@
         </carriers>
         <shipping translate="label" module="aramexshipping">
             <groups>
-                <origin translate="label">
+                <aramex_settings translate="label">
+                    <label>Aramex Settings</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>4</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
                     <fields>
-                        <street_line3 translate="label">
-                            <label>Street Address Line 3</label>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>70</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </street_line3>
                         <department translate="label">
                             <label>Department</label>
                             <frontend_type>text</frontend_type>
-                            <sort_order>80</sort_order>
+                            <sort_order>10</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </department>
-                        <person_name translate="label">
-                            <label>Person Name</label>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>90</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </person_name>
-                        <person_title translate="label">
-                            <label>Person Title</label>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>100</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </person_title>
-                        <company translate="label">
-                            <label>Company</label>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>110</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </company>
-                        <store_description translate="label">
-                            <label>Store Description</label>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>120</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </store_description>
-                        <phone_number1 translate="label">
-                            <label>Phone Number 1</label>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>130</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </phone_number1>
-                        <phone_number1_ext translate="label">
-                            <label>Phone Number 1 Ext</label>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>140</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </phone_number1_ext>
-                        <phone_number2 translate="label">
-                            <label>Phone Number 2</label>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>150</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </phone_number2>
-                        <phone_number2_ext translate="label">
-                            <label>Phone Number 2 Ext</label>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>160</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </phone_number2_ext>
-                        <faxnumber translate="label">
-                            <label>Fax Number</label>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>170</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </faxnumber>
-                        <email translate="label">
-                            <label>Email</label>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>180</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </email>
-                        <cellphone translate="label">
-                            <label>Cellphone</label>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>190</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </cellphone>
                         <type translate="label">
                             <label>Type</label>
                             <frontend_type>text</frontend_type>
-                            <sort_order>200</sort_order>
+                            <sort_order>20</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </type>
                     </fields>
-                </origin>
+                </aramex_settings>
             </groups>
         </shipping>
     </sections>
