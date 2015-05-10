@@ -1,9 +1,9 @@
-# ShopGo Aramex Shipping #
+# Aramex Shipping #
 
 ### About Repository ###
 
 * Aramex Shipping Magento extension.
-* v1.0.10
+* v1.0.12
 
 ### Author ###
 

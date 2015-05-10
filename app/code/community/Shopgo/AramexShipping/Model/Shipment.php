@@ -53,19 +53,10 @@ class Shopgo_AramexShipping_Model_Shipment
         }
     }
 
-    public function isEnabled($checkDepends = true)
+    public function isEnabled()
     {
-        $helper = Mage::helper('aramexshipping');
-
-        if ($checkDepends && $helper->isAdvIfconfigEnabled()) {
-            return Mage::helper('advifconfig')->getStoreConfigWithDependsFlag(
-                Shopgo_AramexShipping_Helper_Data::CARRIERS_ARAMEX_SYSTEM_PATH . 'shipping_service',
-                Shopgo_AramexShipping_Helper_Data::CARRIERS_ARAMEX_SYSTEM_PATH . 'active',
-                1
-            );
-        }
-
-        return $helper->getConfigData('shipping_service', 'carriers_aramex');
+        return Mage::helper('aramexshipping')
+            ->getConfigData('shipping_service', 'carriers_aramex');
     }
 
     public function checkAccount($clientInfoSource)
@@ -120,10 +111,6 @@ class Shopgo_AramexShipping_Model_Shipment
     public function calculateRate($requestData, $clientInfoSource = array())
     {
         $helper = Mage::helper('aramexshipping');
-
-        if (!$helper->getConfigData('active', 'carriers_aramex')) {
-            return false;
-        }
 
         $productGroup = $requestData['countryId'] == $requestData['destCountryId'] ?
             self::DOMESTIC : self::EXPRESS;
@@ -434,10 +421,7 @@ class Shopgo_AramexShipping_Model_Shipment
                 return false;
         }
 
-        if (!$helper->getConfigData('active', 'carriers_aramex')
-            || !$helper->getConfigData('shipping_service', 'carriers_aramex')
-            || $order->getShippingCarrier()->getCarrierCode() != 'aramex'
-            || !$order->canShip()) {
+        if (!$this->isEnabled() || !$order->canShip()) {
             return;
         }
 
