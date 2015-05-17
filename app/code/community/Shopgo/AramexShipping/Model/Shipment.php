@@ -126,7 +126,7 @@ class Shopgo_AramexShipping_Model_Shipment
         }
 
         $params = array(
-            'ClientInfo' => $helper->getClientInfo($clientInfoSource),
+            'ClientInfo' => $helper->getClientInfo($clientInfoSource, $method),
             'Transaction' => array(
                 'Reference1' => '001'
             ),
@@ -183,7 +183,7 @@ class Shopgo_AramexShipping_Model_Shipment
         return $result;
     }
 
-    public function getRatesAndPackages($object, $returnRates = true, $destinationData = array())
+    public function getRatesAndPackages($object, $returnRates = true, $destinationData = array(), $method = '')
     {
         $helper = Mage::helper('aramexshipping');
         $quoteItems = null;
@@ -362,12 +362,12 @@ class Shopgo_AramexShipping_Model_Shipment
             );
 
             if ($k == 'origin') {
-                $rateRequest = $this->calculateRate($requestData, $v['supplier']);
+                $rateRequest = $this->calculateRate($requestData, $v['supplier'], $method);
                 if ($rateRequest['error']) {
                     return $rateRequest;
                 }
             } else {
-                $rateRequest = $this->calculateRate($requestData, $v['supplier']);
+                $rateRequest = $this->calculateRate($requestData, $v['supplier'], $method);
                 if ($rateRequest['error']) {
                     return $rateRequest;
                 }
@@ -489,16 +489,17 @@ class Shopgo_AramexShipping_Model_Shipment
     {
         $helper = Mage::helper('aramexshipping');
 
-        $clientInfo = $helper->getClientInfo($supplierData);
+        $shippingMethod = explode(
+            '_',
+            $order->getShippingMethod()
+        );
+
+        $clientInfo = $helper->getClientInfo($supplierData, $shippingMethod[1]);
 
         $services = '';
 
         if ($helper->getConfigData('cod', 'carriers_aramex')) {
-            $codMethods = $helper->getConfigData('cod_methods', 'carriers_aramex');
-
-            if (gettype($codMethods) == 'string') {
-                $codMethods = array($codMethods);
-            }
+            $codMethods = $helper->getCodMethodList();
 
             if (in_array($order->getPayment()->getMethodInstance()->getCode(), $codMethods)) {
                 $services = self::SS_CASH_ON_DELIVERY;
@@ -567,7 +568,7 @@ class Shopgo_AramexShipping_Model_Shipment
                     'Consignee' => array(
                         'AccountNumber' => '',
                         'PartyAddress'  => array(
-                            'Line1'               => preg_replace("/\r\n|\n|\r/", ' ', $destinationData['street']),
+                            'Line1'               => $helper->getSingleLineStreetAddress($destinationData['street']),
                             'Line2'               => '',
                             'Line3'               => '',
                             'City'                => ucwords(strtolower($destinationData['city'])),
@@ -812,7 +813,7 @@ class Shopgo_AramexShipping_Model_Shipment
 
                 $result = $this->_saveShipment($object, $shipmentInfo, $trackingNo, $quoteType);
             } else {
-                $serviceName = $pickupModel->isEnabled() ? 'Pickup' : 'Shipment';
+                $serviceName = $pickupModel->isEnabled() && $pickupUsed ? 'Pickup' : 'Shipment';
                 $helper->log($errorMsg, '', 'aramex_create_shipment');
                 $userMsg = $helper->__($serviceName . ' could not be created, please contact us to know more about this issue.<br/>Error:&nbsp;%s', $errorMsg);
                 $helper->userMessage($userMsg, 'error');

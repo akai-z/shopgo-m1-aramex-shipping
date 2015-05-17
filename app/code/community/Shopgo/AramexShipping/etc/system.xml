@@ -94,11 +94,50 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </check_account>
+                        <cod translate="label">
+                            <label>Cash on Delivery</label>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>100</sort_order>
+                            <source_model>adminhtml/system_config_source_enabledisable</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </cod>
+                        <cod_account translate="label">
+                            <label>COD Account</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_enabledisable</source_model>
+                            <sort_order>110</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <depends><cod>1</cod></depends>
+                        </cod_account>
+                        <cod_account_number translate="label">
+                            <label>COD Account Number</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>120</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <depends><cod_account>1</cod_account></depends>
+                        </cod_account_number>
+                        <cod_account_pin translate="label">
+                            <label>COD Account PIN</label>
+                            <comment>COD Account Number and COD Account PIN are used for COD shipments only.</comment>
+                            <frontend_type>obscure</frontend_type>
+                            <backend_model>adminhtml/system_config_backend_encrypted</backend_model>
+                            <sort_order>130</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <depends><cod_account>1</cod_account></depends>
+                        </cod_account_pin>
                         <product_type translate="label">
                             <label>Product Type</label>
                             <frontend_type>select</frontend_type>
                             <source_model>aramexshipping/system_config_source_producttypes</source_model>
-                            <sort_order>100</sort_order>
+                            <sort_order>140</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
@@ -107,7 +146,7 @@
                             <label>Domestic Product Type</label>
                             <frontend_type>select</frontend_type>
                             <source_model>aramexshipping/system_config_source_domproducttypes</source_model>
-                            <sort_order>110</sort_order>
+                            <sort_order>150</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
@@ -116,7 +155,7 @@
                             <label>Domestic Customs Value</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_enabledisable</source_model>
-                            <sort_order>120</sort_order>
+                            <sort_order>160</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
@@ -125,7 +164,7 @@
                             <label>Weight Unit</label>
                             <frontend_type>select</frontend_type>
                             <source_model>aramexshipping/system_config_source_unitofmeasure</source_model>
-                            <sort_order>130</sort_order>
+                            <sort_order>170</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
@@ -134,7 +173,7 @@
                             <label>Shipping Service</label>
                             <comment>If disabled, Aramex shipping service will not be used to register Aramex shipments, whenever store shipments are created.</comment>
                             <frontend_type>select</frontend_type>
-                            <sort_order>140</sort_order>
+                            <sort_order>180</sort_order>
                             <source_model>adminhtml/system_config_source_enabledisable</source_model>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -144,7 +183,7 @@
                             <label>Tracking Service</label>
                             <comment>If disabled, Aramex tracking service will not be used to add/view Aramex tracking numbers in store shipments.</comment>
                             <frontend_type>select</frontend_type>
-                            <sort_order>150</sort_order>
+                            <sort_order>190</sort_order>
                             <source_model>adminhtml/system_config_source_enabledisable</source_model>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -155,7 +194,7 @@
                             <label>Auto Tracking No.</label>
                             <comment>Tracking numbers will be added automatically to store shipments when created.</comment>
                             <frontend_type>select</frontend_type>
-                            <sort_order>160</sort_order>
+                            <sort_order>200</sort_order>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -169,46 +208,18 @@
                             <label>Pickup Service</label>
                             <comment>If disabled, Aramex shipments pickup service will not be used to create/cancel pickups.</comment>
                             <frontend_type>select</frontend_type>
-                            <sort_order>170</sort_order>
+                            <sort_order>210</sort_order>
                             <source_model>adminhtml/system_config_source_enabledisable</source_model>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                             <depends><shipping_service>1</shipping_service></depends>
                         </pickup_service>
-                        <cod translate="label">
-                            <label>Cash on Delivery</label>
-                            <frontend_type>select</frontend_type>
-                            <sort_order>180</sort_order>
-                            <source_model>adminhtml/system_config_source_enabledisable</source_model>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                            <depends><shipping_service>1</shipping_service></depends>
-                        </cod>
-                        <cod_methods translate="label">
-                            <label>Cash on Delivery Methods</label>
-                            <comment><![CDATA[
-                                Select Cash on Delivery methods from the above payment methods list.<br/>
-                                <strong style="color:#3D5B9C">Note:</strong> Cash on Delivery amount must not exceed 1000 USD, otherwise, Aramex shipments creation would fail.<br/>
-                                <strong style="color:red">Warning!</strong> Cash on Delivery amount can only be in USD, so make sure that currency setup and rates conversion are done properly, in order to produce accurate amounts.
-                            ]]></comment>
-                            <frontend_type>multiselect</frontend_type>
-                            <sort_order>190</sort_order>
-                            <source_model>aramexshipping/system_config_source_activepaymentmethods</source_model>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                            <depends>
-                                <shipping_service>1</shipping_service>
-                                <cod>1</cod>
-                            </depends>
-                        </cod_methods>
                         <free_shipping_enable translate="label">
                             <label>Free Shipping with Minimum Order Amount</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_enabledisable</source_model>
-                            <sort_order>200</sort_order>
+                            <sort_order>220</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
@@ -217,7 +228,7 @@
                             <label>Minimum Order Amount for Free Shipping</label>
                             <frontend_type>text</frontend_type>
                             <validate>validate-number validate-zero-or-greater</validate>
-                            <sort_order>210</sort_order>
+                            <sort_order>230</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
@@ -227,7 +238,7 @@
                             <label>Alert Suppliers</label>
                             <comment>Notify suppliers about orders that contain their products.</comment>
                             <frontend_type>select</frontend_type>
-                            <sort_order>220</sort_order>
+                            <sort_order>240</sort_order>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -238,7 +249,7 @@
                             <label>Displayed Error Message</label>
                             <comment>If specified, it will replace some of the system's default messages.</comment>
                             <frontend_type>textarea</frontend_type>
-                            <sort_order>230</sort_order>
+                            <sort_order>250</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -246,7 +257,7 @@
                         <sallowspecific translate="label">
                             <label>Ship to Applicable Countries</label>
                             <frontend_type>select</frontend_type>
-                            <sort_order>240</sort_order>
+                            <sort_order>260</sort_order>
                             <frontend_class>shipping-applicable-country</frontend_class>
                             <source_model>adminhtml/system_config_source_shipping_allspecificcountries</source_model>
                             <show_in_default>1</show_in_default>
@@ -256,7 +267,7 @@
                         <specificcountry translate="label">
                             <label>Ship to Specific Countries</label>
                             <frontend_type>multiselect</frontend_type>
-                            <sort_order>250</sort_order>
+                            <sort_order>270</sort_order>
                             <source_model>adminhtml/system_config_source_country</source_model>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -272,7 +283,7 @@
                                 * This is an <strong>Experimental</strong> feature and is currently done via email, if it proves to be useful, it will be kept and improved.
                             ]]></comment>
                             <frontend_type>select</frontend_type>
-                            <sort_order>260</sort_order>
+                            <sort_order>280</sort_order>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -287,7 +298,7 @@
                                 * This is an <strong>Experimental</strong> feature and is currently done via email, if it proves to be useful, it will be kept and improved.
                             ]]></comment>
                             <frontend_type>select</frontend_type>
-                            <sort_order>270</sort_order>
+                            <sort_order>290</sort_order>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -302,7 +313,7 @@
                                 * If left empty, the general contact email will be used.
                             ]]></comment>
                             <frontend_type>textarea</frontend_type>
-                            <sort_order>280</sort_order>
+                            <sort_order>300</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
@@ -312,7 +323,7 @@
                             <label>Debug</label>
                             <comment>Make sure that system logging is enabled (System > Configuration > Advanced > Developer > Log Settings) in order to use this feature.</comment>
                             <frontend_type>select</frontend_type>
-                            <sort_order>290</sort_order>
+                            <sort_order>310</sort_order>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -321,7 +332,7 @@
                         <showmethod translate="label">
                             <label>Show Method if Not Applicable</label>
                             <frontend_type>select</frontend_type>
-                            <sort_order>300</sort_order>
+                            <sort_order>320</sort_order>
                             <frontend_class>shipping-skip-hide</frontend_class>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <show_in_default>1</show_in_default>
@@ -331,7 +342,7 @@
                         <aramex_error translate="label">
                             <label>Show Aramex errors</label>
                             <frontend_type>select</frontend_type>
-                            <sort_order>310</sort_order>
+                            <sort_order>330</sort_order>
                             <frontend_class>shipping-skip-hide</frontend_class>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <show_in_default>1</show_in_default>
@@ -342,7 +353,7 @@
                         <sort_order translate="label">
                             <label>Sort Order</label>
                             <frontend_type>text</frontend_type>
-                            <sort_order>320</sort_order>
+                            <sort_order>340</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>

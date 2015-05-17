@@ -18,6 +18,20 @@ class Shopgo_AramexShipping_Helper_Data
     protected $_logFile = 'aramex_shipping.log';
 
 
+    public function __construct()
+    {
+        $code  = 'aramex_cod';
+        $cfesm = $this->codFilteringEnabledShippingMethods();
+
+        if (!empty($cesm)) {
+            $cfesm[] = $code;
+        } else {
+            $cfesm = array($code);
+        }
+
+        $this->codFilteringEnabledShippingMethods('set', $cfesm);
+    }
+
     public function getSuppliersCollection($id = null)
     {
         $collection = Mage::getModel('aramexshipping/supplier')->getCollection();
@@ -70,7 +84,9 @@ class Shopgo_AramexShipping_Helper_Data
             'account_country_code' => $this->getConfigData('account_country_code', 'carriers_aramex'),
             'account_entity'       => $this->getConfigData('account_entity', 'carriers_aramex'),
             'account_number'       => $this->getConfigData('account_number', 'carriers_aramex'),
-            'account_pin'          => Mage::helper('core')->decrypt($this->getConfigData('account_pin', 'carriers_aramex'))
+            'account_pin'          => Mage::helper('core')->decrypt($this->getConfigData('account_pin', 'carriers_aramex')),
+            'cod_account_number'   => $this->getConfigData('cod_account_number', 'carriers_aramex'),
+            'cod_account_pin'      => Mage::helper('core')->decrypt($this->getConfigData('cod_account_pin', 'carriers_aramex'))
         );
 
         if ($section == 'general_info') {
@@ -84,7 +100,7 @@ class Shopgo_AramexShipping_Helper_Data
         return $data;
     }
 
-    public function getClientInfo($source)
+    public function getClientInfo($source, $method = '')
     {
         if (empty($source)) {
             $source = $this->getOriginSupplier('aramex_account');
@@ -102,14 +118,37 @@ class Shopgo_AramexShipping_Helper_Data
         if ($source['account_entity']) {
             $clientInfo['AccountEntity'] = strtoupper($source['account_entity']);
         }
-        if ($source['account_number']) {
-            $clientInfo['AccountNumber'] = $source['account_number'];
-        }
-        if ($source['account_pin']) {
-            $clientInfo['AccountPin'] = $source['account_pin'];
+
+        if ($method == 'cod' && $this->isCodAccountSet($source)) {
+            if ($source['cod_account_number']) {
+                $clientInfo['AccountNumber'] = $source['cod_account_number'];
+            }
+            if ($source['cod_account_pin']) {
+                $clientInfo['AccountPin'] = $source['cod_account_pin'];
+            }
+        } else {
+            if ($source['account_number']) {
+                $clientInfo['AccountNumber'] = $source['account_number'];
+            }
+            if ($source['account_pin']) {
+                $clientInfo['AccountPin'] = $source['account_pin'];
+            }
         }
 
         return $clientInfo;
+    }
+
+    public function isCodAccountSet($info)
+    {
+        $accountNumber = isset($info['cod_account_number'])
+            ? $info['cod_account_number']
+            : $this->getConfigData('cod_account_number', 'carriers_aramex');
+
+        $accountPin = isset($info['cod_account_pin'])
+            ? $info['cod_account_number']
+            : Mage::helper('core')->decrypt($this->getConfigData('cod_account_pin', 'carriers_aramex'));
+
+        return $accountNumber && $accountPin;
     }
 
     public function getConfigData($var, $type, $store = null)

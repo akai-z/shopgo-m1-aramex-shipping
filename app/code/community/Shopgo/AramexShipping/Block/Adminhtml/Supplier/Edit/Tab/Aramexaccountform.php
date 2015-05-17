@@ -48,6 +48,16 @@ class Shopgo_AramexShipping_Block_Adminhtml_Supplier_Edit_Tab_Aramexaccountform
             'name' => 'check_account'
         ))->setRenderer($this->getLayout()->createBlock('aramexshipping/adminhtml_system_config_form_checkAccountButton'));
 
+        $fieldset->addField('cod_account_number', 'obscure', array(
+            'label' => Mage::helper('aramexshipping')->__('COD Account Number'),
+            'name'  => 'cod_account_number'
+        ));
+
+        $fieldset->addField('cod_account_pin', 'obscure', array(
+            'label' => Mage::helper('aramexshipping')->__('COD Account PIN'),
+            'name'  => 'cod_account_pin'
+        ));
+
         $data = array();
 
         if (Mage::registry('aramex_suppliers_data')) {

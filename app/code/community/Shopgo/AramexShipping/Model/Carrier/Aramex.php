@@ -4,14 +4,20 @@ class Shopgo_AramexShipping_Model_Carrier_Aramex
     extends Mage_Shipping_Model_Carrier_Abstract
     implements Mage_Shipping_Model_Carrier_Interface
 {
-    protected $_code   = 'aramex';
+    protected $_code         = 'aramex';
+    protected $_standardCode = 'standard';
+    protected $_codCode      = 'cod';
+
     protected $_result = null;
+
 
     public function collectRates(Mage_Shipping_Model_Rate_Request $request)
     {
         if (!Mage::getStoreConfig('carriers/' . $this->_code . '/active')) {
             return false;
         }
+
+        $helper = Mage::helper('aramexshipping');
 
         $this->_updateFreeMethodQuote($request);
 
@@ -34,47 +40,111 @@ class Shopgo_AramexShipping_Model_Carrier_Aramex
             : Mage::getSingleton('checkout/session');
         $quote = $session->getQuote();
 
-        $price = 0;
-        $error = false;
-        $methodTitle = '';
+        $result = Mage::getModel('shipping/rate_result');
+
+        $result->append(
+            $this->_getStandardRateResult($quote, $destinationData)
+        );
+
+        if ($helper->getConfigData('cod', 'carriers_aramex')
+            && (
+                $helper->isCodAccountSet()
+                || Mage::getModel('aramexshipping/supplier')->isSupplierCodAccountSet($quote)
+            )) {
+            $result->append(
+                $this->_getCodRateResult($quote, $destinationData)
+            );
+        }
+
+        return $result;
+    }
+
+    private function _getStandardRateResult($quote, $destinationData)
+    {
+        $rateResult = $this->_getRatesAndPackages($quote, $destinationData);
+
+        $result = $this->_getRateResult(
+            $rateResult['price'],
+            'standard',
+            Mage::helper('aramexshipping')->__('Standard'),
+            array(
+                'status' => $rateResult['error'],
+                'message' => $rateResult['error_msg'],
+                'aramex_message' => $rateResult['aramex_error_msg']
+            )
+        );
+
+        return $result;
+    }
+
+    private function _getCodRateResult($quote, $destinationData)
+    {
+        $method     = 'cod';
+        $rateResult = $this->_getRatesAndPackages($quote, $destinationData, $method);
+
+        $result = $this->_getRateResult(
+            $rateResult['price'],
+            $method,
+            Mage::helper('aramexshipping')->__('Cash on Delivery'),
+            array(
+                'status' => $rateResult['error'],
+                'message' => $rateResult['error_msg'],
+                'aramex_message' => $rateResult['aramex_error_msg']
+            )
+        );
+
+        return $result;
+    }
+
+    private function _getRatesAndPackages($quote, $destinationData, $method = '')
+    {
+        $helper = Mage::helper('aramexshipping');
 
         $result = Mage::getModel('aramexshipping/shipment')
             ->getRatesAndPackages($quote, true, $destinationData);
 
-        $error = $result['error'];
+        $errorMsg = $this->getConfigData('specificerrmsg');
 
-        $errorMessage = $this->getConfigData('specificerrmsg');
+        if (isset($result['error_msg'])) {
+            $result['error_msg'] = 'Aramex Error: ' . $result['error_msg'];
 
-        if (isset($result['error_msg'])
-            && Mage::helper('aramexshipping')->getConfigData('aramex_error', 'carriers_aramex')) {
-            $errorMessage = $aramexErrorMessage = 'Aramex Error: ' . $result['error_msg'];
+            if ($helper->getConfigData('aramex_error', 'carriers_aramex')) {
+                $result['aramex_error_msg'] = $result['error_msg'];
+            }
         }
 
-        $price = $result['price'];
+        return $result;
+    }
 
-        $handling = Mage::getStoreConfig('carriers/' . $this->_code . '/handling');
-        $result = Mage::getModel('shipping/rate_result');
+    private function _getRateResult($price, $methodCode, $methodTitle, $error)
+    {
+        $helper = Mage::helper('aramexshipping');
+        $result = null;
 
-        if (!$error && $price > 0) {
+        if (!$error['status'] && $price > 0) {
             $method = Mage::getModel('shipping/rate_result_method');
+
             $method->setCarrier($this->_code);
-            $method->setMethod($this->_code);
+            $method->setMethod($methodCode);
             $method->setCarrierTitle($this->getConfigData('title'));
             $method->setMethodTitle($methodTitle);
             $method->setPrice($price);
             $method->setCost($price);
-            $result->append($method);
+
+            $result = $method;
         } else {
             $error = Mage::getModel('shipping/rate_result_error');
+
             $error->setCarrier($this->_code);
             $error->setCarrierTitle($this->getConfigData('title'));
-            $error->setErrorMessage($errorMessage);
-            $result->append($error);
+            $error->setErrorMessage($error['message']);
 
-            if ($aramexErrorMessage) {
-                Mage::helper('aramexshipping')->log($aramexErrorMessage, '', 'aramex_collect_rates');
-                Mage::helper('aramexshipping')->sendLogEmail(
-                    array('subject' => 'Collect Rates Error Log', 'content' => $aramexErrorMessage)
+            $result = $error;
+
+            if ($error['aramex_message']) {
+                $helper->log($error['aramex_message'], '', 'aramex_collect_rates');
+                $helper->sendLogEmail(
+                    array('subject' => 'Collect Rates Error Log', 'content' => $error['aramex_message'])
                 );
             }
         }
@@ -84,7 +154,12 @@ class Shopgo_AramexShipping_Model_Carrier_Aramex
 
     public function getAllowedMethods()
     {
-        return array('aramex' => $this->getConfigData('name'));
+        $helper = Mage::helper('aramexshipping');
+
+        return array(
+            $this->_standardCode => $helper->__('Standard'),
+            $this->_codCode      => $helper->__('Cash on Delivery')
+        );
     }
 
     public function isTrackingAvailable()
