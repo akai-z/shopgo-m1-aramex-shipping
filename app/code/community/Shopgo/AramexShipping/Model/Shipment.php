@@ -28,14 +28,16 @@ class Shopgo_AramexShipping_Model_Shipment
 
     public function getCode($type, $code = '')
     {
+        $helper = Mage::helper('aramexshipping');
+
         $codes = array(
             'unit_of_measure' => array(
-                self::POUNDS    => Mage::helper('aramexshipping')->__('Pounds'),
-                self::KILOGRAMS => Mage::helper('aramexshipping')->__('Kilograms')
+                self::POUNDS    => $helper->__('Pounds'),
+                self::KILOGRAMS => $helper->__('Kilograms')
             ),
             'unit_of_volume' => array(
-                self::CUBIC_CENTIMETER => Mage::helper('aramexshipping')->__(self::CUBIC_CENTIMETER),
-                self::CUBIC_INCH       => Mage::helper('aramexshipping')->__(self::CUBIC_INCH)
+                self::CUBIC_CENTIMETER => $helper->__(self::CUBIC_CENTIMETER),
+                self::CUBIC_INCH       => $helper->__(self::CUBIC_INCH)
             )
         );
 

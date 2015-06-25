@@ -3,7 +3,7 @@
 ### About Repository ###
 
 * Aramex Shipping Magento extension.
-* v1.2.0
+* v1.2.1
 
 ### Author ###
 

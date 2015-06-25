@@ -11,6 +11,22 @@ class Shopgo_AramexShipping_Model_Carrier_Aramex
     protected $_result = null;
 
 
+    public function getMethodsCodes($code = '')
+    {
+        $helper = Mage::helper('aramexshipping');
+
+        $codes = array(
+            $this->_standardCode => $helper->__('Standard'),
+            $this->_codCode      => $helper->__('Cash on Delivery')
+        );
+
+        if (!isset($codes[$code])) {
+            return false;
+        } elseif ('' === $code) {
+            return $codes;
+        }
+    }
+
     public function collectRates(Mage_Shipping_Model_Rate_Request $request)
     {
         if (!Mage::getStoreConfig('carriers/' . $this->_code . '/active')) {
@@ -62,13 +78,14 @@ class Shopgo_AramexShipping_Model_Carrier_Aramex
     private function _getStandardRateResult($quote, $destinationData)
     {
         $rateResult = $this->_getRatesAndPackages($quote, $destinationData);
+        $method     = getMethodsCodes($this->_standardCode);
 
         $result = $this->_getRateResult(
             $rateResult['price'],
-            'standard',
-            Mage::helper('aramexshipping')->__('Standard'),
+            $this->_standardCode,
+            $method[$this->_standardCode],
             array(
-                'status' => $rateResult['error'],
+                'status'  => $rateResult['error'],
                 'message' => $rateResult['error_msg'],
                 'aramex_message' => $rateResult['aramex_error_msg']
             )
@@ -79,15 +96,15 @@ class Shopgo_AramexShipping_Model_Carrier_Aramex
 
     private function _getCodRateResult($quote, $destinationData)
     {
-        $method     = 'cod';
         $rateResult = $this->_getRatesAndPackages($quote, $destinationData, $method);
+        $method     = getMethodsCodes($this->_codCode);
 
         $result = $this->_getRateResult(
             $rateResult['price'],
-            $method,
-            Mage::helper('aramexshipping')->__('Cash on Delivery'),
+            $this->_codCode,
+            $method[$this->_codCode],
             array(
-                'status' => $rateResult['error'],
+                'status'  => $rateResult['error'],
                 'message' => $rateResult['error_msg'],
                 'aramex_message' => $rateResult['aramex_error_msg']
             )
