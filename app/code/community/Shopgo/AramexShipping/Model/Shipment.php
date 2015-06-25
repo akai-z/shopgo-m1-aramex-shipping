@@ -644,12 +644,12 @@ class Shopgo_AramexShipping_Model_Shipment
                 'Reference5' => ''
             );
             $params['LabelInfo']  = array(
-                'ReportID'   => 9201,
+                'ReportID'   => $services == self::SS_CASH_ON_DELIVERY ? 9729 : 9201,
                 'ReportType' => 'URL',
             );
         }
 
-        if ($services == 'CODS') {
+        if ($services == self::SS_CASH_ON_DELIVERY) {
             $baseCurrencyCode = Mage::app()->getStore()->getBaseCurrencyCode();
             $codPrice = $price;
             if ($baseCurrencyCode != 'USD') {
