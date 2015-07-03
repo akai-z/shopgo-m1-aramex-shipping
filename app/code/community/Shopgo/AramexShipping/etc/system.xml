@@ -36,7 +36,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </username>
-                        <password translate="label">
+                        <password translate="label comment">
                             <label>Password</label>
                             <comment><![CDATA[
                                 You can create your own Aramex account here:<br/>
@@ -73,7 +73,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </account_number>
-                        <account_pin translate="label">
+                        <account_pin translate="label comment">
                             <label>Account PIN</label>
                             <comment><![CDATA[
                                 Aramex Account's Country Code, Entity, Number and PIN can be obtained by contacting Aramex.<br/>
@@ -122,7 +122,7 @@
                             <show_in_store>0</show_in_store>
                             <depends><cod_account>1</cod_account></depends>
                         </cod_account_number>
-                        <cod_account_pin translate="label">
+                        <cod_account_pin translate="label comment">
                             <label>COD Account PIN</label>
                             <comment>COD Account Number and COD Account PIN are used for COD shipments only.</comment>
                             <frontend_type>obscure</frontend_type>
@@ -169,7 +169,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </unit_of_measure>
-                        <shipping_service translate="label">
+                        <shipping_service translate="label comment">
                             <label>Shipping Service</label>
                             <comment>If disabled, Aramex shipping service will not be used to register Aramex shipments, whenever store shipments are created.</comment>
                             <frontend_type>select</frontend_type>
@@ -179,7 +179,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </shipping_service>
-                        <tracking_service translate="label">
+                        <tracking_service translate="label comment">
                             <label>Tracking Service</label>
                             <comment>If disabled, Aramex tracking service will not be used to add/view Aramex tracking numbers in store shipments.</comment>
                             <frontend_type>select</frontend_type>
@@ -190,7 +190,7 @@
                             <show_in_store>0</show_in_store>
                             <depends><shipping_service>1</shipping_service></depends>
                         </tracking_service>
-                        <auto_tracking_no translate="label">
+                        <auto_tracking_no translate="label comment">
                             <label>Auto Tracking No.</label>
                             <comment>Tracking numbers will be added automatically to store shipments when created.</comment>
                             <frontend_type>select</frontend_type>
@@ -204,7 +204,7 @@
                                 <shipping_service>1</shipping_service>
                             </depends>
                         </auto_tracking_no>
-                        <pickup_service translate="label">
+                        <pickup_service translate="label comment">
                             <label>Pickup Service</label>
                             <comment>If disabled, Aramex shipments pickup service will not be used to create/cancel pickups.</comment>
                             <frontend_type>select</frontend_type>
@@ -234,7 +234,7 @@
                             <show_in_store>0</show_in_store>
                             <depends><free_shipping_enable>1</free_shipping_enable></depends>
                         </free_shipping_subtotal>
-                        <alert_suppliers translate="label">
+                        <alert_suppliers translate="label comment">
                             <label>Alert Suppliers</label>
                             <comment>Notify suppliers about orders that contain their products.</comment>
                             <frontend_type>select</frontend_type>
@@ -245,7 +245,7 @@
                             <show_in_store>0</show_in_store>
                             <depends><shipping_service>1</shipping_service></depends>
                         </alert_suppliers>
-                        <specificerrmsg translate="label">
+                        <specificerrmsg translate="label comment">
                             <label>Displayed Error Message</label>
                             <comment>If specified, it will replace some of the system's default messages.</comment>
                             <frontend_type>textarea</frontend_type>
@@ -274,7 +274,7 @@
                             <show_in_store>0</show_in_store>
                             <can_be_empty>1</can_be_empty>
                         </specificcountry>
-                        <author_reports translate="label">
+                        <author_reports translate="label comment">
                             <label>Usage and Error Reports</label>
                             <comment><![CDATA[
                                 Help us improve this shipping method, by sending us usage and error reports.<br/>
@@ -289,7 +289,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </author_reports>
-                        <admin_reports translate="label">
+                        <admin_reports translate="label comment">
                             <label>Admin Reports</label>
                             <comment><![CDATA[
                                 Send usage and error reports to website admin(s).<br/>
@@ -304,7 +304,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </admin_reports>
-                        <reports_emails translate="label">
+                        <reports_emails translate="label comment">
                             <label>Reports Emails</label>
                             <comment><![CDATA[
                                 Emails that can receive usage and error reports.<br/>
@@ -319,7 +319,7 @@
                             <show_in_store>0</show_in_store>
                             <depends><admin_reports>1</admin_reports></depends>
                         </reports_emails>
-                        <debug translate="label">
+                        <debug translate="label comment">
                             <label>Debug</label>
                             <comment>Make sure that system logging is enabled (System > Configuration > Advanced > Developer > Log Settings) in order to use this feature.</comment>
                             <frontend_type>select</frontend_type>

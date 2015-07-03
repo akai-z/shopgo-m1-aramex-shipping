@@ -25,6 +25,8 @@ class Shopgo_AramexShipping_Model_Shipment
     const KILOGRAMS                 = 'KG';
     const CUBIC_CENTIMETER          = 'cm3';
     const CUBIC_INCH                = 'inch3';
+    const STANDARD_LABEL_REPORT_ID  = 9201;
+    const COD_LABEL_REPORT_ID       = 9729;
 
     public function getCode($type, $code = '')
     {
@@ -501,12 +503,14 @@ class Shopgo_AramexShipping_Model_Shipment
         $services = '';
 
         if ($helper->getConfigData('cod', 'carriers_aramex')) {
-            $codMethods = $helper->getCodMethodList();
+            $codMethods  = $helper->getCodMethodList();
 
             if (in_array($order->getPayment()->getMethodInstance()->getCode(), $codMethods)) {
                 $services = self::SS_CASH_ON_DELIVERY;
             }
         }
+
+        $codCurrency = $helper->getCodCurrency(); // Also used for customs value
 
         $productGroup = $supplierData['country_code'] == $destinationData['country_id'] ?
             self::DOMESTIC : self::EXPRESS;
@@ -536,6 +540,12 @@ class Shopgo_AramexShipping_Model_Shipment
 
         if (isset($shipFormData['due_date'])) {
             $dueDate = date('c', strtotime($shipFormData['due_date']));
+        }
+
+        $labelReportId = self::STANDARD_LABEL_REPORT_ID;
+
+        if ($services == self::SS_CASH_ON_DELIVERY) {
+            $labelReportId = self::COD_LABEL_REPORT_ID;
         }
 
         $params = array(
@@ -628,9 +638,9 @@ class Shopgo_AramexShipping_Model_Shipment
             $params['Shipments']['Shipment']['Details']['CustomsValueAmount'] = array(
                 'Value' => $helper->currencyConvert(
                     $price, $baseCurrencyCode,
-                    'USD', 'price', 2
+                    $codCurrency, 'price', 2
                 ),
-                'CurrencyCode' => 'USD'
+                'CurrencyCode' => $codCurrency
             );
         }
 
@@ -644,23 +654,20 @@ class Shopgo_AramexShipping_Model_Shipment
                 'Reference5' => ''
             );
             $params['LabelInfo']  = array(
-                'ReportID'   => $services == self::SS_CASH_ON_DELIVERY ? 9729 : 9201,
+                'ReportID'   => $labelReportId,
                 'ReportType' => 'URL',
             );
         }
 
         if ($services == self::SS_CASH_ON_DELIVERY) {
             $baseCurrencyCode = Mage::app()->getStore()->getBaseCurrencyCode();
-            $codPrice = $price;
-            if ($baseCurrencyCode != 'USD') {
-                $codPrice = $helper->currencyConvert(
-                    $price, $baseCurrencyCode,
-                    'USD', 'price', 2
-                );
-            }
+            $codPrice = $helper->currencyConvert(
+                $price, $baseCurrencyCode,
+                $codCurrency, 'price', 2
+            );
             $params['Shipments']['Shipment']['Details']['CashOnDeliveryAmount'] = array(
                 'Value' => $codPrice,
-                'CurrencyCode' => 'USD'
+                'CurrencyCode' => $codCurrency
             );
         }
 

@@ -55,45 +55,49 @@ class Shopgo_AramexShipping_Helper_Data
     public function getOriginSupplier($section = '')
     {
         $data = array();
+        $generalInfo   = array();
+        $aramexAccount = array();
 
-        $generalInfo = array(
-            'country_code'           => strtoupper($this->getConfigData('country_id', 'shipping_origin')),
-            'state_or_province_code' => $this->getConfigData('region_id', 'shipping_origin'),
-            'post_code'              => $this->getConfigData('postcode', 'shipping_origin'),
-            'city'                   => ucwords(strtolower($this->getConfigData('city', 'shipping_origin'))),
-            'address_line1'          => $this->getConfigData('street_line1', 'shipping_origin'),
-            'address_line2'          => $this->getConfigData('street_line2', 'shipping_origin'),
-            'address_line3'          => $this->getConfigData('street_line3', 'shipping_origin'),
-            'department'             => $this->getConfigData('department', 'aramex_settings'),
-            'person_name'            => $this->getConfigData('person_name', 'additional_info'),
-            'person_title'           => $this->getConfigData('person_title', 'additional_info'),
-            'company_name'           => $this->getConfigData('company', 'additional_info'),
-            'phone_number1'          => $this->getConfigData('phone_number', 'additional_info'),
-            'phone_number1_ext'      => $this->getConfigData('phone_number_ext', 'additional_info'),
-            'phone_number2'          => $this->getConfigData('phone_number2', 'additional_info'),
-            'phone_number2_ext'      => $this->getConfigData('phone_number2_ext', 'additional_info'),
-            'fax_number'             => $this->getConfigData('faxnumber', 'additional_info'),
-            'cellphone'              => $this->getConfigData('cellphone', 'additional_info'),
-            'email'                  => $this->getConfigData('email', 'additional_info'),
-            'type'                   => $this->getConfigData('type', 'aramex_settings')
-        );
+        if ($section == 'general_info' || empty($section)) {
+            $systemSettings = $this->getShippingSettings(array('origin', 'additional_info'));
 
-        $aramexAccount = array(
-            'username'             => $this->getConfigData('username', 'carriers_aramex'),
-            'password'             => Mage::helper('core')->decrypt($this->getConfigData('password', 'carriers_aramex')),
-            'account_country_code' => $this->getConfigData('account_country_code', 'carriers_aramex'),
-            'account_entity'       => $this->getConfigData('account_entity', 'carriers_aramex'),
-            'account_number'       => $this->getConfigData('account_number', 'carriers_aramex'),
-            'account_pin'          => Mage::helper('core')->decrypt($this->getConfigData('account_pin', 'carriers_aramex')),
-            'cod_account_number'   => $this->getConfigData('cod_account_number', 'carriers_aramex'),
-            'cod_account_pin'      => Mage::helper('core')->decrypt($this->getConfigData('cod_account_pin', 'carriers_aramex'))
-        );
+            $generalInfo = $data = array(
+                'country_code'           => strtoupper($this->getConfigData('country_id', 'shipping_origin')),
+                'state_or_province_code' => $this->getConfigData('region_id', 'shipping_origin'),
+                'post_code'              => $this->getConfigData('postcode', 'shipping_origin'),
+                'city'                   => ucwords(strtolower($this->getConfigData('city', 'shipping_origin'))),
+                'address_line1'          => $this->getConfigData('street_line1', 'shipping_origin'),
+                'address_line2'          => $this->getConfigData('street_line2', 'shipping_origin'),
+                'address_line3'          => $systemSettings['origin']['street_line3'],
+                'department'             => $this->getConfigData('department', 'aramex_settings'),
+                'person_name'            => $systemSettings['additional_info']['person_name'],
+                'person_title'           => $systemSettings['additional_info']['person_title'],
+                'company_name'           => $systemSettings['additional_info']['company'],
+                'phone_number1'          => $systemSettings['additional_info']['phone_number'],
+                'phone_number1_ext'      => $systemSettings['additional_info']['phone_number_ext'],
+                'phone_number2'          => $systemSettings['additional_info']['phone_number2'],
+                'phone_number2_ext'      => $systemSettings['additional_info']['phone_number2_ext'],
+                'fax_number'             => $systemSettings['additional_info']['faxnumber'],
+                'cellphone'              => $systemSettings['additional_info']['cellphone'],
+                'email'                  => $systemSettings['additional_info']['email'],
+                'type'                   => $this->getConfigData('type', 'aramex_settings')
+            );
+        }
 
-        if ($section == 'general_info') {
-            $data = $generalInfo;
-        } elseif ($section == 'aramex_account') {
-            $data = $aramexAccount;
-        } else {
+        if ($section == 'aramex_account' || empty($section)) {
+            $aramexAccount = $data = array(
+                'username'             => $this->getConfigData('username', 'carriers_aramex'),
+                'password'             => Mage::helper('core')->decrypt($this->getConfigData('password', 'carriers_aramex')),
+                'account_country_code' => $this->getConfigData('account_country_code', 'carriers_aramex'),
+                'account_entity'       => $this->getConfigData('account_entity', 'carriers_aramex'),
+                'account_number'       => $this->getConfigData('account_number', 'carriers_aramex'),
+                'account_pin'          => Mage::helper('core')->decrypt($this->getConfigData('account_pin', 'carriers_aramex')),
+                'cod_account_number'   => $this->getConfigData('cod_account_number', 'carriers_aramex'),
+                'cod_account_pin'      => Mage::helper('core')->decrypt($this->getConfigData('cod_account_pin', 'carriers_aramex'))
+            );
+        }
+
+        if (empty($section)) {
             $data = array_merge($aramexAccount, $generalInfo);
         }
 
