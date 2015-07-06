@@ -14,17 +14,24 @@ class Shopgo_AramexShipping_Model_Carrier_Aramex
     public function getMethodsCodes($code = '')
     {
         $helper = Mage::helper('aramexshipping');
+        $result = '';
 
         $codes = array(
             $this->_standardCode => $helper->__('Standard'),
             $this->_codCode      => $helper->__('Cash on Delivery')
         );
 
-        if (!isset($codes[$code])) {
-            return false;
-        } elseif ('' === $code) {
-            return $codes;
+        switch (true) {
+            case !isset($codes[$code]) && !empty($code):
+                break;
+            case isset($codes[$code]):
+                $result = $codes[$code];
+                break;
+            default:
+                $result = $codes;
         }
+
+        return $result;
     }
 
     public function collectRates(Mage_Shipping_Model_Rate_Request $request)
@@ -78,12 +85,12 @@ class Shopgo_AramexShipping_Model_Carrier_Aramex
     private function _getStandardRateResult($quote, $destinationData)
     {
         $rateResult = $this->_getRatesAndPackages($quote, $destinationData);
-        $method     = getMethodsCodes($this->_standardCode);
+        $method     = $this->getMethodsCodes($this->_standardCode);
 
         $result = $this->_getRateResult(
             $rateResult['price'],
             $this->_standardCode,
-            $method[$this->_standardCode],
+            $method,
             array(
                 'status'  => $rateResult['error'],
                 'message' => $rateResult['error_msg'],
@@ -97,12 +104,12 @@ class Shopgo_AramexShipping_Model_Carrier_Aramex
     private function _getCodRateResult($quote, $destinationData)
     {
         $rateResult = $this->_getRatesAndPackages($quote, $destinationData, $method);
-        $method     = getMethodsCodes($this->_codCode);
+        $method     = $this->getMethodsCodes($this->_codCode);
 
         $result = $this->_getRateResult(
             $rateResult['price'],
             $this->_codCode,
-            $method[$this->_codCode],
+            $method,
             array(
                 'status'  => $rateResult['error'],
                 'message' => $rateResult['error_msg'],

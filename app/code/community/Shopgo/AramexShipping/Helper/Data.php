@@ -142,7 +142,7 @@ class Shopgo_AramexShipping_Helper_Data
         return $clientInfo;
     }
 
-    public function isCodAccountSet($info)
+    public function isCodAccountSet($info = array())
     {
         $accountNumber = isset($info['cod_account_number'])
             ? $info['cod_account_number']
@@ -152,7 +152,7 @@ class Shopgo_AramexShipping_Helper_Data
             ? $info['cod_account_number']
             : Mage::helper('core')->decrypt($this->getConfigData('cod_account_pin', 'carriers_aramex'));
 
-        return $accountNumber && $accountPin;
+        return $this->getConfigData('cod_account', 'carriers_aramex') && $accountNumber && $accountPin;
     }
 
     public function getConfigData($var, $type, $store = null)
