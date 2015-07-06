@@ -510,7 +510,7 @@ class Shopgo_AramexShipping_Model_Shipment
             }
         }
 
-        $codCurrency = $helper->getCodCurrency(); // Also used for customs value
+        $codCurrency = $helper->getCodCurrency($order); // Also used for customs value
 
         $productGroup = $supplierData['country_code'] == $destinationData['country_id'] ?
             self::DOMESTIC : self::EXPRESS;
