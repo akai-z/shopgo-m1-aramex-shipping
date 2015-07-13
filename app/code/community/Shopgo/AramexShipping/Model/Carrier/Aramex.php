@@ -103,7 +103,7 @@ class Shopgo_AramexShipping_Model_Carrier_Aramex
 
     private function _getCodRateResult($quote, $destinationData)
     {
-        $rateResult = $this->_getRatesAndPackages($quote, $destinationData, $method);
+        $rateResult = $this->_getRatesAndPackages($quote, $destinationData);
         $method     = $this->getMethodsCodes($this->_codCode);
 
         $result = $this->_getRateResult(
@@ -120,27 +120,27 @@ class Shopgo_AramexShipping_Model_Carrier_Aramex
         return $result;
     }
 
-    private function _getRatesAndPackages($quote, $destinationData, $method = '')
+    private function _getRatesAndPackages($quote, $destinationData)
     {
         $helper = Mage::helper('aramexshipping');
 
         $result = Mage::getModel('aramexshipping/shipment')
             ->getRatesAndPackages($quote, true, $destinationData);
 
-        $errorMsg = $this->getConfigData('specificerrmsg');
-
         if (isset($result['error_msg'])) {
-            $result['error_msg'] = 'Aramex Error: ' . $result['error_msg'];
+            $result['error_msg'] = $result['aramex_error_msg'] = 'Aramex Error: ' . $result['error_msg'];
 
-            if ($helper->getConfigData('aramex_error', 'carriers_aramex')) {
-                $result['aramex_error_msg'] = $result['error_msg'];
+            if (!$helper->getConfigData('aramex_error', 'carriers_aramex')) {
+                $result['error_msg'] = $this->getConfigData('specificerrmsg');
             }
+        } else {
+            $result['error_msg'] = $this->getConfigData('specificerrmsg');
         }
 
         return $result;
     }
 
-    private function _getRateResult($price, $methodCode, $methodTitle, $error)
+    private function _getRateResult($price, $methodCode, $methodTitle, $_error)
     {
         $helper = Mage::helper('aramexshipping');
         $result = null;
@@ -161,14 +161,14 @@ class Shopgo_AramexShipping_Model_Carrier_Aramex
 
             $error->setCarrier($this->_code);
             $error->setCarrierTitle($this->getConfigData('title'));
-            $error->setErrorMessage($error['message']);
+            $error->setErrorMessage($_error['message']);
 
             $result = $error;
 
-            if ($error['aramex_message']) {
-                $helper->log($error['aramex_message'], '', 'aramex_collect_rates');
+            if ($_error['aramex_message']) {
+                $helper->log($_error['aramex_message'], '', 'aramex_collect_rates');
                 $helper->sendLogEmail(
-                    array('subject' => 'Collect Rates Error Log', 'content' => $error['aramex_message'])
+                    array('subject' => 'Collect Rates Error Log', 'content' => $_error['aramex_message'])
                 );
             }
         }
