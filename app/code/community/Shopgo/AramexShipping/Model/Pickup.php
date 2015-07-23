@@ -24,12 +24,12 @@ class Shopgo_AramexShipping_Model_Pickup
         return $helper->getConfigData('pickup_service', 'carriers_aramex');
     }
 
-    public function getPickupData($pickupData, $shipmentsData, $supplierData = array(), $clientInfo = array())
+    public function getPickupData($pickupData, $shipmentsData, $shippingMethod = '', $supplierData = array(), $clientInfo = array())
     {
         $helper = Mage::helper('aramexshipping');
 
         if (!$clientInfo) {
-            $clientInfo = $helper->getClientInfo($supplierData);
+            $clientInfo = $helper->getClientInfo($supplierData, $shippingMethod);
         }
 
         $pickupDate = strtotime($pickupData['date']);

@@ -726,6 +726,11 @@ class Shopgo_AramexShipping_Model_Shipment
 
             if ($pickupUsed) {
                 $service = 'pickup_create_service';
+                $shippingMethod = explode(
+                    '_',
+                    $order->getShippingMethod()
+                );
+
                 $shipmentData = $this->getShipmentData(
                     $supplierData, $packagePrice,
                     $package['qty'], $package['weight'],
@@ -733,7 +738,7 @@ class Shopgo_AramexShipping_Model_Shipment
                 );
                 $serviceData = $pickupModel->getPickupData(
                     Mage::registry('ship_form_aramex_pickup_data'),
-                    $shipmentData['Shipments'],
+                    $shipmentData['Shipments'], $shippingMethod[1],
                     $package['supplier']
                 );
             } else {

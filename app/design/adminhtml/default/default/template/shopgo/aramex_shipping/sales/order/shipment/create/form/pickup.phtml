@@ -263,7 +263,7 @@
                                                     <td class="time-separator">:</td>
                                                     <td>
                                                         <select class="sga-pickup-required-entry" name="shopgo[aramex][pickup][last_time][minute]">
-                                                            <?php $lastTimeMinute = $formData['last_time']['hour'] ?>
+                                                            <?php $lastTimeMinute = $formData['last_time']['minute'] ?>
                                                             <?php foreach ($this->getTimePartsOptions('minute') as $option): ?>
                                                             <option value="<?php echo $option['value'] ?>"<?php if ($lastTimeMinute == $option['value']): ?> selected<?php endif ?>><?php echo $option['label'] ?></option>
                                                             <?php endforeach ?>
@@ -272,7 +272,7 @@
                                                     <td class="time-separator">:</td>
                                                     <td>
                                                         <select class="sga-pickup-required-entry" name="shopgo[aramex][pickup][last_time][second]">
-                                                            <?php $lastTimeSecond = $formData['last_time']['hour'] ?>
+                                                            <?php $lastTimeSecond = $formData['last_time']['second'] ?>
                                                             <?php foreach ($this->getTimePartsOptions('second') as $option): ?>
                                                             <option value="<?php echo $option['value'] ?>"<?php if ($lastTimeSecond == $option['value']): ?> selected<?php endif ?>><?php echo $option['label'] ?></option>
                                                             <?php endforeach ?>
@@ -281,7 +281,7 @@
                                                     <td class="time-separator meridian">&nbsp;</td>
                                                     <td>
                                                         <select class="sga-pickup-required-entry" name="shopgo[aramex][pickup][last_time][meridian]">
-                                                            <?php $lastTimeMeridian = $formData['last_time']['hour'] ?>
+                                                            <?php $lastTimeMeridian = $formData['last_time']['meridian'] ?>
                                                             <?php foreach ($this->getTimePartsOptions('meridian') as $option): ?>
                                                             <option value="<?php echo $option['value'] ?>"<?php if ($lastTimeMeridian == $option['value']): ?> selected<?php endif ?>><?php echo $option['label'] ?></option>
                                                             <?php endforeach ?>
