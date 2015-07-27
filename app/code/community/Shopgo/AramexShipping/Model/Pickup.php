@@ -24,16 +24,15 @@ class Shopgo_AramexShipping_Model_Pickup
         return $helper->getConfigData('pickup_service', 'carriers_aramex');
     }
 
-    public function getPickupData($pickupData, $shipmentsData, $shippingMethod = '', $supplierData = array(), $clientInfo = array())
+    public function getPickupData($pickupData, $shipmentData)
     {
         $helper = Mage::helper('aramexshipping');
 
-        if (!$clientInfo) {
-            $clientInfo = $helper->getClientInfo($supplierData, $shippingMethod);
-        }
-
         $pickupDate = strtotime($pickupData['date']);
-        $pickupTimesDate = date('m/d/Y', strtotime($shipmentsData['Shipment']['ShippingDateTime']));
+        $pickupTimesDate = date(
+            'm/d/Y',
+            strtotime($shipmentData['Shipments']['Shipment']['ShippingDateTime'])
+        );
 
         $params = array(
             'Pickup' => array(
@@ -69,23 +68,23 @@ class Shopgo_AramexShipping_Model_Pickup
                 'Reference1'     => $pickupData['reference1'],
                 'Reference2'     => $pickupData['reference2'],
                 'Vehicle'        => $pickupData['vehicle'],
-                'Shipments'      => $shipmentsData,
+                'Shipments'      => $shipmentData['Shipments'],
                 'PickupItems'    => array(
                     'PickupItemDetail' => array(
-                        'ProductGroup'      => $shipmentsData['Shipment']['Details']['ProductGroup'],
-                        'ProductType'       => $shipmentsData['Shipment']['Details']['ProductType'],
+                        'ProductGroup'      => $shipmentData['Shipments']['Shipment']['Details']['ProductGroup'],
+                        'ProductType'       => $shipmentData['Shipments']['Shipment']['Details']['ProductType'],
                         'NumberOfShipments' => 1,
                         'PackageType'       => $pickupData['items']['package_type'],
-                        'Payment'           => $shipmentsData['Shipment']['Details']['PaymentType'],
+                        'Payment'           => $shipmentData['Shipments']['Shipment']['Details']['PaymentType'],
                         'ShipmentWeight'    => array(
-                            'Value' => $shipmentsData['Shipment']['Details']['ActualWeight']['Value'],
-                            'Unit'  => $shipmentsData['Shipment']['Details']['ActualWeight']['Unit']
+                            'Value' => $shipmentData['Shipments']['Shipment']['Details']['ActualWeight']['Value'],
+                            'Unit'  => $shipmentData['Shipments']['Shipment']['Details']['ActualWeight']['Unit']
                         ),
                         'ShipmentVolume'    => array(
                             'Value' => $pickupData['items']['shipment_volume_value'],
                             'Unit'  => $pickupData['items']['shipment_volume_unit']
                         ),
-                        'NumberOfPieces'    => $shipmentsData['Shipment']['Details']['NumberOfPieces'],
+                        'NumberOfPieces'    => $shipmentData['Shipments']['Shipment']['Details']['NumberOfPieces'],
                         //'CashAmount'        => array(),
                         //'ExtraCharges'      => array(),
                         //'ShipmentDimesion'  => array(),
@@ -94,7 +93,7 @@ class Shopgo_AramexShipping_Model_Pickup
                 ),
                 'Status' => $pickupData['status']
             ),
-            'ClientInfo' => $clientInfo,
+            'ClientInfo' => $shipmentData['ClientInfo'],
             'Transaction' => array(
                 'Reference1' => '001',
                 'Reference2' => '',
@@ -102,10 +101,7 @@ class Shopgo_AramexShipping_Model_Pickup
                 'Reference4' => '',
                 'Reference5' => ''
             ),
-            'LabelInfo' => array(
-                'ReportID'   => 9201,
-                'ReportType' => 'URL',
-            )
+            'LabelInfo' => $shipmentData['LabelInfo']
         );
 
         return $params;

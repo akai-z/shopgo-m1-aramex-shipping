@@ -489,7 +489,7 @@ class Shopgo_AramexShipping_Model_Shipment
         return $result;
     }
 
-    public function getShipmentData($supplierData, $price, $qty, $weight, $destinationData, $order, $isPickup = false)
+    public function getShipmentData($supplierData, $price, $qty, $weight, $destinationData, $order)
     {
         $helper = Mage::helper('aramexshipping');
 
@@ -644,20 +644,18 @@ class Shopgo_AramexShipping_Model_Shipment
             );
         }
 
-        if (!$isPickup) {
-            $params['ClientInfo']  = $clientInfo;
-            $params['Transaction'] = array(
-                'Reference1' => '001',
-                'Reference2' => '',
-                'Reference3' => '',
-                'Reference4' => '',
-                'Reference5' => ''
-            );
-            $params['LabelInfo']  = array(
-                'ReportID'   => $labelReportId,
-                'ReportType' => 'URL',
-            );
-        }
+        $params['ClientInfo']  = $clientInfo;
+        $params['Transaction'] = array(
+            'Reference1' => '001',
+            'Reference2' => '',
+            'Reference3' => '',
+            'Reference4' => '',
+            'Reference5' => ''
+        );
+        $params['LabelInfo']  = array(
+            'ReportID'   => $labelReportId,
+            'ReportType' => 'URL',
+        );
 
         if ($services == self::SS_CASH_ON_DELIVERY) {
             $baseCurrencyCode = Mage::app()->getStore()->getBaseCurrencyCode();
@@ -726,20 +724,15 @@ class Shopgo_AramexShipping_Model_Shipment
 
             if ($pickupUsed) {
                 $service = 'pickup_create_service';
-                $shippingMethod = explode(
-                    '_',
-                    $order->getShippingMethod()
-                );
 
                 $shipmentData = $this->getShipmentData(
                     $supplierData, $packagePrice,
                     $package['qty'], $package['weight'],
-                    $destinationData, $order, true
+                    $destinationData, $order
                 );
                 $serviceData = $pickupModel->getPickupData(
                     Mage::registry('ship_form_aramex_pickup_data'),
-                    $shipmentData['Shipments'], $shippingMethod[1],
-                    $package['supplier']
+                    $shipmentData
                 );
             } else {
                 $serviceData = $this->getShipmentData(
