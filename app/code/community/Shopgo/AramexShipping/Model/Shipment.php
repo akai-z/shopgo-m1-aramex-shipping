@@ -630,16 +630,32 @@ class Shopgo_AramexShipping_Model_Shipment
             )
         );
 
+        $baseCurrencyCode    = Mage::app()->getStore()->getBaseCurrencyCode();
+        $currentCurrencyCode = Mage::app()->getStore()->getCurrentCurrencyCode();
+
         $domCustomsValue = !empty($supplierData['dom_customs_value'])
             ? $supplierData['dom_customs_value']
             : $helper->getConfigData('dom_customs_value', 'carriers_aramex');
 
         if ($productGroup == self::EXPRESS || $domCustomsValue) {
+            $codPrice = $order->getBaseGrandTotal();
+
+            switch (true) {
+                case $codCurrency == $baseCurrencyCode:
+                    // Do nothing
+                    break;
+                case $codCurrency == $currentCurrencyCode:
+                    $codPrice = $order->getGrandTotal();
+                    break;
+                default:
+                    $codPrice = $helper->currencyConvert(
+                        $codPrice, $baseCurrencyCode,
+                        $codCurrency, 'price', 2
+                    );
+            }
+
             $params['Shipments']['Shipment']['Details']['CustomsValueAmount'] = array(
-                'Value' => $helper->currencyConvert(
-                    $price, $baseCurrencyCode,
-                    $codCurrency, 'price', 2
-                ),
+                'Value' => $codPrice,
                 'CurrencyCode' => $codCurrency
             );
         }
@@ -658,11 +674,22 @@ class Shopgo_AramexShipping_Model_Shipment
         );
 
         if ($services == self::SS_CASH_ON_DELIVERY) {
-            $baseCurrencyCode = Mage::app()->getStore()->getBaseCurrencyCode();
-            $codPrice = $helper->currencyConvert(
-                $price, $baseCurrencyCode,
-                $codCurrency, 'price', 2
-            );
+            $codPrice = $order->getBaseGrandTotal();
+
+            switch (true) {
+                case $codCurrency == $baseCurrencyCode:
+                    // Do nothing
+                    break;
+                case $codCurrency == $currentCurrencyCode:
+                    $codPrice = $order->getGrandTotal();
+                    break;
+                default:
+                    $codPrice = $helper->currencyConvert(
+                        $codPrice, $baseCurrencyCode,
+                        $codCurrency, 'price', 2
+                    );
+            }
+
             $params['Shipments']['Shipment']['Details']['CashOnDeliveryAmount'] = array(
                 'Value' => $codPrice,
                 'CurrencyCode' => $codCurrency
