@@ -55,6 +55,7 @@ class Shopgo_AramexShipping_Model_Carrier_Aramex
         $destinationData = array(
             'city'       => ucwords(strtolower($request->getDestCity())),
             'country_id' => $request->getDestCountryId(),
+            'street'     => $request->getDestStreet(),
             'postcode'   => $request->getDestPostcode()
         );
 

@@ -77,11 +77,13 @@ class Shopgo_AramexShipping_Model_Shipment
             'OriginAddress' => array(
                 'City'        => ucwords(strtolower($originData['city'])),
                 'CountryCode' => $originData['country_code'],
+                'Line1'       => $originData['address_line1'],
                 'PostCode'    => $originData['post_code']
             ),
             'DestinationAddress' => array(
                 'City'        => 'New York',
                 'CountryCode' => 'US',
+                'Line1'       => '-',
                 'PostCode'    => '10001'
             ),
             'ShipmentDetails' => array(
@@ -137,11 +139,13 @@ class Shopgo_AramexShipping_Model_Shipment
             'OriginAddress' => array(
                 'City'        => ucwords(strtolower($requestData['city'])),
                 'CountryCode' => strtoupper($requestData['countryId']),
+                'Line1'       => $requestData['address'],
                 'PostCode'    => $requestData['postcode']
             ),
             'DestinationAddress' => array(
                 'City'        => ucwords(strtolower($requestData['destCity'])),
                 'CountryCode' => strtoupper($requestData['destCountryId']),
+                'Line1'       => $requestData['destAddress'],
                 'PostCode'    => $requestData['destPostcode']
             ),
             'ShipmentDetails' => array(
@@ -216,6 +220,8 @@ class Shopgo_AramexShipping_Model_Shipment
         if (!$destinationData) {
             $destinationData = $object->getShippingAddress()->getData();
         }
+
+        $destinationData['street'] = $helper->getSingleLineStreetAddress($destinationData['street']);
 
         foreach ($quoteItems as $item) {
             $localItems[] = $item;
@@ -355,14 +361,16 @@ class Shopgo_AramexShipping_Model_Shipment
             $ratePrice = 0;
 
             $requestData = array(
-                'city'          => $v['supplier']['city'],
-                'countryId'     => $v['supplier']['country_code'],
-                'postcode'      => $v['supplier']['post_code'],
-                'destCity'      => ucwords(strtolower($destinationData['city'])),
-                'destCountryId' => strtoupper($destinationData['country_id']),
-                'destPostcode'  => $destinationData['postcode'],
-                'packageWeight' => $v['weight'],
-                'packageQty'    => $v['qty']
+                'city'            => $v['supplier']['city'],
+                'countryId'       => $v['supplier']['country_code'],
+                'address'         => $v['supplier']['address_line1'],
+                'postcode'        => $v['supplier']['post_code'],
+                'destCity'        => ucwords(strtolower($destinationData['city'])),
+                'destCountryId'   => strtoupper($destinationData['country_id']),
+                'destAddress'     => $destinationData['street'],
+                'destPostcode'    => $destinationData['postcode'],
+                'packageWeight'   => $v['weight'],
+                'packageQty'      => $v['qty']
             );
 
             if ($k == 'origin') {
