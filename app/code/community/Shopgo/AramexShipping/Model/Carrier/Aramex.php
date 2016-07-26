@@ -104,7 +104,7 @@ class Shopgo_AramexShipping_Model_Carrier_Aramex
 
     private function _getCodRateResult($quote, $destinationData)
     {
-        $rateResult = $this->_getRatesAndPackages($quote, $destinationData);
+        $rateResult = $this->_getRatesAndPackages($quote, $destinationData, $this->_codCode);
         $method     = $this->getMethodsCodes($this->_codCode);
 
         $result = $this->_getRateResult(
@@ -121,12 +121,12 @@ class Shopgo_AramexShipping_Model_Carrier_Aramex
         return $result;
     }
 
-    private function _getRatesAndPackages($quote, $destinationData)
+    private function _getRatesAndPackages($quote, $destinationData, $method = '')
     {
         $helper = Mage::helper('aramexshipping');
 
         $result = Mage::getModel('aramexshipping/shipment')
-            ->getRatesAndPackages($quote, true, $destinationData);
+            ->getRatesAndPackages($quote, true, $destinationData, $method);
 
         if (isset($result['error_msg'])) {
             $result['error_msg'] = $result['aramex_error_msg'] = 'Aramex Error: ' . $result['error_msg'];

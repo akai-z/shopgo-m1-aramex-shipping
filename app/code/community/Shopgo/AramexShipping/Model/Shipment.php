@@ -114,7 +114,7 @@ class Shopgo_AramexShipping_Model_Shipment
         return $result;
     }
 
-    public function calculateRate($requestData, $clientInfoSource = array())
+    public function calculateRate($requestData, $clientInfoSource = array(), $method = '')
     {
         $helper = Mage::helper('aramexshipping');
 
