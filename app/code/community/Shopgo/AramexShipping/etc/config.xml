@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Shopgo_AramexShipping>
-            <version>1.2.13</version>
+            <version>1.3.0</version>
         </Shopgo_AramexShipping>
     </modules>
     <global>

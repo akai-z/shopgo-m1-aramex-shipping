@@ -7,6 +7,8 @@ class Shopgo_AramexShipping_Model_Carrier_Aramex
     protected $_code         = 'aramex';
     protected $_standardCode = 'standard';
     protected $_codCode      = 'cod';
+    protected $_aramexFreeShippingCode = 'aramex_free';
+    private $_isAramexFreeShipping = false;
 
     protected $_result = null;
 
@@ -18,7 +20,8 @@ class Shopgo_AramexShipping_Model_Carrier_Aramex
 
         $codes = array(
             $this->_standardCode => $helper->__('Standard'),
-            $this->_codCode      => $helper->__('Cash on Delivery')
+            $this->_codCode      => $helper->__('Cash on Delivery'),
+            $this->_aramexFreeShippingCode => $helper->__('Free Shipping via Aramex')
         );
 
         switch (true) {
@@ -41,6 +44,18 @@ class Shopgo_AramexShipping_Model_Carrier_Aramex
         }
 
         $helper = Mage::helper('aramexshipping');
+        $result = Mage::getModel('shipping/rate_result');
+
+        if (
+            $this->getConfigData('aramex_free_shipping')
+            && $this->getConfigData('aramex_free_shipping_sallowspecific')
+        ) {
+            $aramexFreeShippingSpecificCountries = explode(',', $this->getConfigData('aramex_free_shipping_specificcountry'));
+            $this->_isAramexFreeShipping = in_array($request->getDestCountryId(), $aramexFreeShippingSpecificCountries)
+                ? true: false;
+        } else {
+            $this->_isAramexFreeShipping = false;
+        }
 
         $this->_updateFreeMethodQuote($request);
 
@@ -49,7 +64,15 @@ class Shopgo_AramexShipping_Model_Carrier_Aramex
                 && $request->getBaseSubtotalInclTax() >=
                 $this->getConfigData('free_shipping_subtotal'))
         ) {
-            return false;
+            if ($this->_isAramexFreeShipping) {
+                $result->append(
+                    $this->_getAramexFreeShippingResult()
+                );
+
+                return $result;
+            } else {
+                return false;
+            }
         }
 
         $destinationData = array(
@@ -63,8 +86,6 @@ class Shopgo_AramexShipping_Model_Carrier_Aramex
             ? Mage::getSingleton('adminhtml/session_quote')
             : Mage::getSingleton('checkout/session');
         $quote = $session->getQuote();
-
-        $result = Mage::getModel('shipping/rate_result');
 
         $result->append(
             $this->_getStandardRateResult($quote, $destinationData)
@@ -121,6 +142,21 @@ class Shopgo_AramexShipping_Model_Carrier_Aramex
         return $result;
     }
 
+    private function _getAramexFreeShippingResult()
+    {
+        $method = $this->getMethodsCodes($this->_aramexFreeShippingCode);
+        $result = $this->_getRateResult(
+            0,
+            $this->_aramexFreeShippingCode,
+            $method,
+            array(
+                'status' => false,
+            )
+        );
+
+        return $result;
+    }
+
     private function _getRatesAndPackages($quote, $destinationData, $method = '')
     {
         $helper = Mage::helper('aramexshipping');
@@ -146,7 +182,8 @@ class Shopgo_AramexShipping_Model_Carrier_Aramex
         $helper = Mage::helper('aramexshipping');
         $result = null;
 
-        if (!$error['status'] && $price > 0) {
+        if ((isset($_error['status']) && !$_error['status'])
+            && ($price > 0 || $this->_isAramexFreeShipping)) {
             $method = Mage::getModel('shipping/rate_result_method');
 
             $method->setCarrier($this->_code);
@@ -183,7 +220,8 @@ class Shopgo_AramexShipping_Model_Carrier_Aramex
 
         return array(
             $this->_standardCode => $helper->__('Standard'),
-            $this->_codCode      => $helper->__('Cash on Delivery')
+            $this->_codCode      => $helper->__('Cash on Delivery'),
+            $this->_aramexFreeShippingCode => $helper->__('Free Shipping via Aramex')
         );
     }
 
